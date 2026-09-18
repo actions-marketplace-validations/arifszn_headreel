@@ -40,18 +40,25 @@ The Action is on the [GitHub Marketplace](https://github.com/marketplace/actions
          - uses: arifszn/headreel@v1
            with:
              style: contribution-city
+             publish_mode: branch
              tagline: Open source maintainer
              website: https://example.com
    ```
 
-3. Run the workflow once from the **Actions** tab. It adds `headreel.gif` to the repository.
-4. Add this line to your `README.md`:
+3. Run the workflow once from the **Actions** tab. It adds `headreel.gif` to the `headreel` branch.
+4. Add the image line to your `README.md`. The workflow run page shows it, ready to copy. It looks like this:
 
    ```markdown
-   ![My GitHub activity](headreel.gif)
+   ![My GitHub activity](https://raw.githubusercontent.com/octocat/octocat/headreel/headreel.gif)
    ```
 
-The workflow commits the banner only when it changes. See [Settings](#settings) for all inputs.
+The workflow updates the banner only when it changes. After an update, the new banner can take up to 5 minutes to show. See [Settings](#settings) for all inputs.
+
+### Keep your repository small
+
+The setup above uses `publish_mode: branch`. The banner lives on its own `headreel` branch, and each update replaces the old banner, so your repository does not grow.
+
+If you remove `publish_mode: branch`, each update adds a new commit to your main branch. Old banners stay in your history, and each one is a few MB.
 
 ## Command
 
@@ -61,7 +68,7 @@ Run this command. Replace `octocat` with your GitHub username.
 npx headreel --style contribution-city --user octocat --tagline "Open source maintainer" --website https://example.com
 ```
 
-The command saves `headreel.gif` in the current folder. Add the file to your profile repository, and add the image line from step 4 above to its `README.md`.
+The command saves `headreel.gif` in the current folder. Add the file to your profile repository, and add `![My GitHub activity](headreel.gif)` to its `README.md`.
 
 You need:
 
@@ -81,7 +88,8 @@ The Action and the command use the same settings.
 | `options`        | `--option <key=value>` | empty                           | Style options. Action: one `key: value` on each line. Command: repeat the flag, for example `--option beacons=5`. |
 | `output`         | `--out`                | `headreel.gif`                  | The path of the banner.                                                                                           |
 | `token`          | `--token`              | `github.token`                  | The token that reads your contribution data.                                                                      |
-| `commit_to`      | -                      | the checked-out branch          | The branch that gets the banner.                                                                                  |
+| `publish_mode`   | -                      | `commit`                        | `commit` adds a commit on every update. `branch` keeps one commit on its own branch, replaced on every update.    |
+| `commit_to`      | -                      | checked-out branch / `headreel` | The branch that gets the banner. The default is `headreel` in `branch` mode.                                      |
 | `commit_message` | -                      | `chore: update headreel banner` | The commit message.                                                                                               |
 | -                | `--config <file>`      | -                               | A JSON file with these settings. Flags replace its values.                                                        |
 

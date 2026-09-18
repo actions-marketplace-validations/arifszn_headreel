@@ -31,8 +31,11 @@ inputs:
   options:
     description: 'Style options, one "key: value" per line.'
     default: ''
+  publish_mode:
+    description: '"commit" adds a commit to a branch on every change. "branch" keeps the banner alone on a branch with one commit that is replaced on every change, so repository history does not grow.'
+    default: commit
   commit_to:
-    description: Branch to commit the banner to. Defaults to the checked-out branch.
+    description: Branch that gets the banner. Defaults to the checked-out branch in commit mode and to "headreel" in branch mode.
     default: ''
   commit_message:
     description: Commit message for banner updates.
@@ -45,6 +48,9 @@ outputs:
   changed:
     description: '"true" when a new banner was committed, "false" when it was unchanged.'
     value: ${{ steps.commit.outputs.changed }}
+  url:
+    description: Raw URL of the banner, ready to use in an image line in your README.
+    value: ${{ steps.link.outputs.url }}
 
 runs:
   using: composite
@@ -81,16 +87,53 @@ runs:
       env:
         RENDERED: ${{ steps.render.outputs.file }}
         INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_PUBLISH_MODE: ${{ inputs.publish_mode }}
         INPUT_COMMIT_TO: ${{ inputs.commit_to }}
         INPUT_COMMIT_MESSAGE: ${{ inputs.commit_message }}
       run: |
         set -euo pipefail
         current=$(git rev-parse --abbrev-ref HEAD)
+        bot_name='github-actions[bot]'
+        bot_email='41898282+github-actions[bot]@users.noreply.github.com'
+
+        case "$INPUT_PUBLISH_MODE" in
+          commit) ;;
+          branch)
+            branch="${INPUT_COMMIT_TO:-headreel}"
+            if [ "$branch" = "$current" ]; then
+              echo "::error::publish_mode branch replaces all history of '$branch'. Set commit_to to a branch other than the checked-out one."
+              exit 1
+            fi
+            echo "branch=$branch" >> "$GITHUB_OUTPUT"
+            # One parentless commit holding only the banner, built without touching the working tree.
+            blob=$(git hash-object -w "$RENDERED")
+            if git fetch --depth=1 origin "$branch" 2>/dev/null \
+              && [ "$(git rev-parse -q --verify "FETCH_HEAD:$INPUT_OUTPUT" || true)" = "$blob" ]; then
+              echo "Banner unchanged; nothing to commit."
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            index="$RUNNER_TEMP/headreel-index"
+            rm -f "$index"
+            GIT_INDEX_FILE="$index" git update-index --add --cacheinfo "100644,$blob,$INPUT_OUTPUT"
+            tree=$(GIT_INDEX_FILE="$index" git write-tree)
+            commit=$(git -c user.name="$bot_name" -c user.email="$bot_email" commit-tree "$tree" -m "$INPUT_COMMIT_MESSAGE")
+            git push --force origin "$commit:refs/heads/$branch"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+            ;;
+          *)
+            echo "::error::publish_mode must be 'commit' or 'branch', got '$INPUT_PUBLISH_MODE'."
+            exit 1
+            ;;
+        esac
+
         branch="${INPUT_COMMIT_TO:-$current}"
         if [ "$branch" = "HEAD" ]; then
           echo "::error::The checkout is a detached HEAD. Set the commit_to input to a branch name."
           exit 1
         fi
+        echo "branch=$branch" >> "$GITHUB_OUTPUT"
         if [ "$branch" != "$current" ]; then
           if git fetch --depth=1 origin "$branch"; then
             git switch -C "$branch" FETCH_HEAD
@@ -108,8 +151,28 @@ runs:
           exit 0
         fi
 
-        git config user.name 'github-actions[bot]'
-        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git config user.name "$bot_name"
+        git config user.email "$bot_email"
         git commit -m "$INPUT_COMMIT_MESSAGE"
         git push origin "HEAD:$branch"
         echo "changed=true" >> "$GITHUB_OUTPUT"
+
+    - id: link
+      shell: bash
+      env:
+        BRANCH: ${{ steps.commit.outputs.branch }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+      run: |
+        set -euo pipefail
+        url="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$BRANCH/$INPUT_OUTPUT"
+        echo "url=$url" >> "$GITHUB_OUTPUT"
+        echo "::notice title=headreel banner::Add this line to your README: ![My GitHub activity]($url)"
+        {
+          echo '### headreel banner'
+          echo
+          echo 'Add this line to your README:'
+          echo
+          echo '```markdown'
+          echo "![My GitHub activity]($url)"
+          echo '```'
+        } >> "$GITHUB_STEP_SUMMARY"
