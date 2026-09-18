@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": ["dist", "docs"],
+  "rules": {
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "Math",
+        "property": "random",
+        "message": "Use the seeded PRNG from src/core/prng.ts so output stays deterministic."
+      }
+    ]
+  }
+}
