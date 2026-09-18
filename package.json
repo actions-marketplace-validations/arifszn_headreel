@@ -1,7 +1,24 @@
 {
   "name": "headreel",
-  "version": "0.0.0",
-  "description": "Animated GitHub profile banners from your GitHub data.",
+  "version": "1.0.0",
+  "description": "Animated GitHub profile banner, rendered from your GitHub data. GitHub Action and CLI.",
+  "keywords": [
+    "github",
+    "profile",
+    "readme",
+    "banner",
+    "gif",
+    "github-action",
+    "contributions"
+  ],
+  "homepage": "https://github.com/arifszn/headreel#readme",
+  "bugs": {
+    "url": "https://github.com/arifszn/headreel/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arifszn/headreel.git"
+  },
   "license": "MIT",
   "author": "Ariful Alam",
   "type": "module",
@@ -23,21 +40,21 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "dev": "tsx src/cli/index.ts"
+    "dev": "tsx src/cli/index.ts",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@napi-rs/canvas": "1.0.9",
     "gifenc": "1.0.3",
     "jsdom": "30.1.0",
     "p5": "2.3.2",
-    "sharp": "0.35.4",
     "zod": "4.6.5"
   },
   "devDependencies": {
     "@types/jsdom": "30.0.0",
     "@types/node": "22.20.3",
     "oxlint": "1.83.0",
-    "prettier": "3.9.8",
+    "prettier": "3.9.7",
     "tsx": "4.23.13",
     "typescript": "7.0.2",
     "vitest": "5.0.1"

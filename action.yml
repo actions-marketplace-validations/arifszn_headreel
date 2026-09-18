@@ -1,0 +1,115 @@
+name: headreel
+description: Animated GitHub profile banner, rendered from your GitHub data and committed to your repo.
+author: arifszn
+
+branding:
+  icon: film
+  color: blue
+
+inputs:
+  style:
+    description: 'Banner style. Available: contribution-city.'
+    required: true
+  username:
+    description: GitHub login to render. Defaults to the repository owner.
+    default: ${{ github.repository_owner }}
+  token:
+    description: GitHub token used to read contribution data.
+    default: ${{ github.token }}
+  output:
+    description: Path of the GIF in your repository.
+    default: headreel.gif
+  tagline:
+    description: One line under your name. Hidden when empty.
+    default: ''
+  website:
+    description: Website shown on the banner. Hidden when empty.
+    default: ''
+  handle:
+    description: Handle shown on the banner, for styles that use it. Hidden when empty.
+    default: ''
+  options:
+    description: 'Style options, one "key: value" per line.'
+    default: ''
+  commit_to:
+    description: Branch to commit the banner to. Defaults to the checked-out branch.
+    default: ''
+  commit_message:
+    description: Commit message for banner updates.
+    default: 'chore: update headreel banner'
+
+outputs:
+  path:
+    description: Path of the banner in the repository.
+    value: ${{ inputs.output }}
+  changed:
+    description: '"true" when a new banner was committed, "false" when it was unchanged.'
+    value: ${{ steps.commit.outputs.changed }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 24
+
+    - id: render
+      shell: bash
+      env:
+        INPUT_STYLE: ${{ inputs.style }}
+        INPUT_USERNAME: ${{ inputs.username }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_TAGLINE: ${{ inputs.tagline }}
+        INPUT_WEBSITE: ${{ inputs.website }}
+        INPUT_HANDLE: ${{ inputs.handle }}
+        INPUT_OPTIONS: ${{ inputs.options }}
+      run: |
+        set -euo pipefail
+        # The npm package is versioned in lockstep with the action's release tags.
+        version=$(node -p "require(process.env.GITHUB_ACTION_PATH + '/package.json').version")
+        file="$RUNNER_TEMP/headreel-banner.gif"
+        args=(--style "$INPUT_STYLE" --user "$INPUT_USERNAME" --out "$file")
+        if [ -n "$INPUT_TAGLINE" ]; then args+=(--tagline "$INPUT_TAGLINE"); fi
+        if [ -n "$INPUT_WEBSITE" ]; then args+=(--website "$INPUT_WEBSITE"); fi
+        if [ -n "$INPUT_HANDLE" ]; then args+=(--handle "$INPUT_HANDLE"); fi
+        if [ -n "$INPUT_OPTIONS" ]; then args+=(--options "$INPUT_OPTIONS"); fi
+        GITHUB_TOKEN="$INPUT_TOKEN" npx --yes "headreel@$version" "${args[@]}"
+        echo "file=$file" >> "$GITHUB_OUTPUT"
+
+    - id: commit
+      shell: bash
+      env:
+        RENDERED: ${{ steps.render.outputs.file }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+        INPUT_COMMIT_TO: ${{ inputs.commit_to }}
+        INPUT_COMMIT_MESSAGE: ${{ inputs.commit_message }}
+      run: |
+        set -euo pipefail
+        current=$(git rev-parse --abbrev-ref HEAD)
+        branch="${INPUT_COMMIT_TO:-$current}"
+        if [ "$branch" = "HEAD" ]; then
+          echo "::error::The checkout is a detached HEAD. Set the commit_to input to a branch name."
+          exit 1
+        fi
+        if [ "$branch" != "$current" ]; then
+          if git fetch --depth=1 origin "$branch"; then
+            git switch -C "$branch" FETCH_HEAD
+          else
+            git switch -c "$branch"
+          fi
+        fi
+
+        mkdir -p "$(dirname "$INPUT_OUTPUT")"
+        cp "$RENDERED" "$INPUT_OUTPUT"
+        git add -- "$INPUT_OUTPUT"
+        if git diff --cached --quiet; then
+          echo "Banner unchanged; nothing to commit."
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git commit -m "$INPUT_COMMIT_MESSAGE"
+        git push origin "HEAD:$branch"
+        echo "changed=true" >> "$GITHUB_OUTPUT"
