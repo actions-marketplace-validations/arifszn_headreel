@@ -8,14 +8,42 @@ An animated banner for your GitHub profile, made from your own GitHub activity.
 
 ![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
-headreel turns your contributions into a looping GIF. A GitHub Action makes a new banner every day and saves it in your profile repository. Your profile README shows the banner.
+headreel turns your contributions into a looping GIF. You can use it in two ways:
 
-- **One file to set up.** Add one workflow file and one line in your README.
-- **Always current.** The workflow updates the banner on a schedule.
-- **Works on light and dark themes.** Each style has its own background.
-- **Runs on your computer too.** Use `npx headreel` on macOS, Windows, or Linux.
+- **One command on your computer.** Run `npx headreel` and get your banner. You do not install or set up anything. It works on macOS, Windows, and Linux.
+- **A GitHub Action that keeps it current.** Add one workflow file, and your banner updates every day by itself.
 
-## Set up the banner
+Every style works on both light and dark GitHub themes.
+
+## Make your banner now
+
+Run this command. Replace `octocat` with your GitHub username.
+
+```bash
+npx headreel --style contribution-city --user octocat
+```
+
+The command saves your banner as `headreel.gif` in the current folder. The first run downloads headreel. After that, a banner takes a few seconds.
+
+Add your tagline and website:
+
+```bash
+npx headreel --style contribution-city --user octocat \
+  --tagline "Open source maintainer" \
+  --website https://example.com
+```
+
+You need [Node.js](https://nodejs.org) 22 (22.22.2 or later), 24 (24.15.0 or later), or 26 and later. You also need a GitHub token. If you use the [GitHub CLI](https://cli.github.com), log in with `gh auth login`, and headreel finds the token. For other ways, see [Command options](#command-options).
+
+To put the banner on your profile, add `headreel.gif` to your profile repository. Then add this line to its `README.md`:
+
+```markdown
+![My GitHub activity](headreel.gif)
+```
+
+## Keep it updated with the GitHub Action
+
+A banner that you make on your computer does not change. The Action makes a new banner every day.
 
 Your profile repository has the same name as your username, for example `octocat/octocat`. Do these steps in that repository.
 
@@ -96,15 +124,19 @@ Example:
       beacons: 5
 ```
 
-More styles are in progress.
+## Command options
 
-## Run it on your computer
-
-You can make a banner without a workflow. You need [Node.js](https://nodejs.org) 22 (22.22.2 or later), 24 (24.15.0 or later), or 26 and later.
-
-```bash
-npx headreel --style contribution-city --user octocat --out banner.gif
-```
+| Option                 | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `--style <id>`         | The banner style (required). See [Styles](#styles).   |
+| `--user <login>`       | Your GitHub username (required).                      |
+| `--out <file>`         | Where to save the GIF. The default is `headreel.gif`. |
+| `--tagline <text>`     | One line under your name.                             |
+| `--website <url>`      | Your website.                                         |
+| `--handle <text>`      | A handle, for styles that show one.                   |
+| `--option <key=value>` | A style setting. Use it again for each setting.       |
+| `--config <file>`      | A JSON file with your settings.                       |
+| `--token <token>`      | A GitHub token. See the token order below.            |
 
 headreel needs a GitHub token to read your contributions. It looks for a token in this order:
 
@@ -112,16 +144,7 @@ headreel needs a GitHub token to read your contributions. It looks for a token i
 2. The `GITHUB_TOKEN` environment variable.
 3. The [GitHub CLI](https://cli.github.com), if you are logged in with `gh auth login`.
 
-Add your tagline, website, and style options:
-
-```bash
-npx headreel --style contribution-city --user octocat \
-  --tagline "Open source maintainer" \
-  --website https://example.com \
-  --option beacons=5
-```
-
-You can also keep your settings in a JSON file:
+You can keep your settings in a JSON file:
 
 ```json
 {
