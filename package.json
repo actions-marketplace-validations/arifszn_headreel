@@ -1,15 +1,24 @@
 {
   "name": "headreel",
   "version": "1.0.0",
-  "description": "Animated GitHub profile banner, rendered from your GitHub data. GitHub Action and CLI.",
+  "description": "Animated GitHub profile banner made from your GitHub activity, with a GitHub Action or CLI.",
   "keywords": [
     "github",
-    "profile",
+    "github-profile",
+    "github-profile-readme",
+    "profile-readme",
     "readme",
     "banner",
     "gif",
+    "animation",
     "github-action",
-    "contributions"
+    "github-actions",
+    "cli",
+    "npx",
+    "contributions",
+    "contribution-graph",
+    "generative-art",
+    "p5js"
   ],
   "homepage": "https://github.com/arifszn/headreel#readme",
   "bugs": {

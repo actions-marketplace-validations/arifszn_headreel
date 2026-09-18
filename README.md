@@ -1,53 +1,25 @@
 # headreel
 
 [![npm](https://img.shields.io/npm/v/headreel)](https://www.npmjs.com/package/headreel)
+[![GitHub Marketplace](https://img.shields.io/badge/marketplace-headreel-blue?logo=github)](https://github.com/marketplace/actions/headreel)
 [![CI](https://github.com/arifszn/headreel/actions/workflows/ci.yml/badge.svg)](https://github.com/arifszn/headreel/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-An animated banner for your GitHub profile, made from your own GitHub activity.
+An animated banner for your GitHub profile, made from your GitHub activity.
 
 ![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
-headreel turns your contributions into a looping GIF. You can use it in two ways:
+Pick one way to make your banner:
 
-- **One command on your computer.** Run `npx headreel` and get your banner. You do not install or set up anything. It works on macOS, Windows, and Linux.
-- **A GitHub Action that keeps it current.** Add one workflow file, and your banner updates every day by itself.
+- [GitHub Action](#github-action): updates the banner every day. No setup on your computer.
+- [Command](#command): makes the banner once on your computer.
 
-Every style works on both light and dark GitHub themes.
+## GitHub Action
 
-## Make your banner now
+The Action is on the [GitHub Marketplace](https://github.com/marketplace/actions/headreel).
 
-Run this command. Replace `octocat` with your GitHub username.
-
-```bash
-npx headreel --style contribution-city --user octocat
-```
-
-The command saves your banner as `headreel.gif` in the current folder. The first run downloads headreel. After that, a banner takes a few seconds.
-
-Add your tagline and website:
-
-```bash
-npx headreel --style contribution-city --user octocat \
-  --tagline "Open source maintainer" \
-  --website https://example.com
-```
-
-You need [Node.js](https://nodejs.org) 22 (22.22.2 or later), 24 (24.15.0 or later), or 26 and later. You also need a GitHub token. If you use the [GitHub CLI](https://cli.github.com), log in with `gh auth login`, and headreel finds the token. For other ways, see [Command options](#command-options).
-
-To put the banner on your profile, add `headreel.gif` to your [profile repository](#your-profile-repository). Then add this line to its `README.md`, where you want the banner to show:
-
-```markdown
-![My GitHub activity](headreel.gif)
-```
-
-## Keep it updated with the GitHub Action
-
-A banner that you make on your computer does not change. The Action makes a new banner every day.
-
-Do these steps in your [profile repository](#your-profile-repository).
-
-1. Create the file `.github/workflows/headreel.yml` with this content:
+1. Open your profile repository. This is the public repository with the same name as your username, for example `octocat/octocat`.
+2. Add `.github/workflows/headreel.yml`:
 
    ```yaml
    name: headreel
@@ -55,7 +27,7 @@ Do these steps in your [profile repository](#your-profile-repository).
    on:
      schedule:
        - cron: '0 0 * * *' # every day at 00:00 UTC
-     workflow_dispatch: # lets you run it from the Actions tab
+     workflow_dispatch:
 
    permissions:
      contents: write
@@ -68,119 +40,69 @@ Do these steps in your [profile repository](#your-profile-repository).
          - uses: arifszn/headreel@v1
            with:
              style: contribution-city
-             tagline: Senior Software Engineer · Distributed Systems
+             tagline: Open source maintainer
              website: https://example.com
    ```
 
-2. Open the **Actions** tab of the repository. Select **headreel**, then select **Run workflow**.
-3. Wait for the run to finish. The workflow adds `headreel.gif` to the repository.
-4. Add this line to your `README.md`, where you want the banner to show:
+3. Run the workflow once from the **Actions** tab. It adds `headreel.gif` to the repository.
+4. Add this line to your `README.md`:
 
    ```markdown
    ![My GitHub activity](headreel.gif)
    ```
 
-5. Open your GitHub profile page to see the banner.
+The workflow commits the banner only when it changes. See [Settings](#settings) for all inputs.
 
-> [!NOTE]
-> The workflow makes a commit only when the banner changes. Your contribution count changes most days, so expect about one commit each day.
+## Command
 
-### Your profile repository
+Run this command. Replace `octocat` with your GitHub username.
 
-Your profile repository has the same name as your username, for example `octocat/octocat`. GitHub shows its `README.md` at the top of your profile page.
+```bash
+npx headreel --style contribution-city --user octocat --tagline "Open source maintainer" --website https://example.com
+```
 
-If you do not have one, make it:
+The command saves `headreel.gif` in the current folder. Add the file to your profile repository, and add the image line from step 4 above to its `README.md`.
 
-1. On GitHub, create a new repository. Use your username as the repository name.
-2. Make the repository **Public**.
-3. Turn on **Add README**, then select **Create repository**.
+You need:
 
-## Action inputs
+- A GitHub token. headreel uses `--token`, then `GITHUB_TOKEN`, then your [GitHub CLI](https://cli.github.com) login (`gh auth login`).
 
-| Input            | Default                         | Description                                                        |
-| ---------------- | ------------------------------- | ------------------------------------------------------------------ |
-| `style`          | (required)                      | The banner style. See [Styles](#styles).                           |
-| `username`       | repository owner                | The GitHub user to show.                                           |
-| `tagline`        | empty                           | One line under your name. Empty means no tagline.                  |
-| `website`        | empty                           | Your website, for example `https://example.com`. Empty means none. |
-| `handle`         | empty                           | A handle, for styles that show one.                                |
-| `options`        | empty                           | Style settings, one `key: value` on each line.                     |
-| `output`         | `headreel.gif`                  | The path of the banner in your repository.                         |
-| `commit_to`      | the checked-out branch          | The branch that gets the banner.                                   |
-| `commit_message` | `chore: update headreel banner` | The commit message for each update.                                |
-| `token`          | `github.token`                  | The token that reads your contribution data.                       |
+## Settings
 
-Your name comes from your GitHub profile. If your profile has no name, the banner shows your username.
+The Action and the command use the same settings.
+
+| Action input     | Command flag           | Default                         | Description                                                                                                       |
+| ---------------- | ---------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `style`          | `--style`              | (required)                      | The banner style. See [Styles](#styles).                                                                          |
+| `username`       | `--user`               | repository owner                | The GitHub user to show. The command requires it.                                                                 |
+| `tagline`        | `--tagline`            | empty                           | One line under your name.                                                                                         |
+| `website`        | `--website`            | empty                           | Your website.                                                                                                     |
+| `handle`         | `--handle`             | empty                           | A handle, for styles that show one.                                                                               |
+| `options`        | `--option <key=value>` | empty                           | Style options. Action: one `key: value` on each line. Command: repeat the flag, for example `--option beacons=5`. |
+| `output`         | `--out`                | `headreel.gif`                  | The path of the banner.                                                                                           |
+| `token`          | `--token`              | `github.token`                  | The token that reads your contribution data.                                                                      |
+| `commit_to`      | -                      | the checked-out branch          | The branch that gets the banner.                                                                                  |
+| `commit_message` | -                      | `chore: update headreel banner` | The commit message.                                                                                               |
+| -                | `--config <file>`      | -                               | A JSON file with these settings. Flags replace its values.                                                        |
+
+Empty settings do not show on the banner. Your name comes from your GitHub profile. If your profile has no name, the banner shows your username.
 
 ## Styles
 
 ### Contribution City
 
-`style: contribution-city`
-
-Each day of the last 12 months is one building. A taller building means more contributions on that day. A light beam moves across the city, and beacons glow on your busiest days.
-
-The banner shows your name, your tagline, your total contributions, and your website.
+`contribution-city`: each day of the last 12 months is one building. A taller building means more contributions. Beacons glow on your busiest days.
 
 | Option    | Default | Description                                        |
 | --------- | ------- | -------------------------------------------------- |
 | `beacons` | `8`     | The number of busiest days with a beacon, 0 to 10. |
 
-Example:
-
-```yaml
-- uses: arifszn/headreel@v1
-  with:
-    style: contribution-city
-    options: |
-      beacons: 5
-```
-
-## Command options
-
-| Option                 | Description                                           |
-| ---------------------- | ----------------------------------------------------- |
-| `--style <id>`         | The banner style (required). See [Styles](#styles).   |
-| `--user <login>`       | Your GitHub username (required).                      |
-| `--out <file>`         | Where to save the GIF. The default is `headreel.gif`. |
-| `--tagline <text>`     | One line under your name.                             |
-| `--website <url>`      | Your website.                                         |
-| `--handle <text>`      | A handle, for styles that show one.                   |
-| `--option <key=value>` | A style setting. Use it again for each setting.       |
-| `--config <file>`      | A JSON file with your settings.                       |
-| `--token <token>`      | A GitHub token. See the token order below.            |
-
-headreel needs a GitHub token to read your contributions. It looks for a token in this order:
-
-1. The `--token` option.
-2. The `GITHUB_TOKEN` environment variable.
-3. The [GitHub CLI](https://cli.github.com), if you are logged in with `gh auth login`.
-
-You can keep your settings in a JSON file:
-
-```json
-{
-  "style": "contribution-city",
-  "user": "octocat",
-  "tagline": "Open source maintainer",
-  "website": "https://example.com",
-  "options": { "beacons": 5 }
-}
-```
-
-```bash
-npx headreel --config headreel.json
-```
-
-Options on the command line replace the values in the file. To see all options, run `npx headreel --help`.
+Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command.
 
 ## Troubleshooting
 
-**The workflow fails with "Permission denied" or a 403 error.**
-Make sure that the workflow file contains `permissions: contents: write`.
-
-**The workflow fails with "Could not resolve to a User".**
-Check the `username` input. It must be a GitHub username.
-
-**The command fails with "No GitHub token found".**
-Log in with `gh auth login`, or set the `GITHUB_TOKEN` environment variable.
+| Problem                          | Fix                                                      |
+| -------------------------------- | -------------------------------------------------------- |
+| "Permission denied" or 403 error | Add `permissions: contents: write` to the workflow file. |
+| "Could not resolve to a User"    | Set `username` to a valid GitHub username.               |
+| "No GitHub token found"          | Run `gh auth login`, or set `GITHUB_TOKEN`.              |
