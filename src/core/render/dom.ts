@@ -54,6 +54,17 @@ export function installDom(): void {
     return canvas.getContext('2d');
   } as typeof HTMLCanvasElement.prototype.getContext;
 
+  // p5 draws offscreen layers (createGraphics) by passing their jsdom canvas
+  // element; Skia only accepts its own canvases, so swap in the backing one.
+  const ctxProto = Object.getPrototypeOf(createCanvas(1, 1).getContext('2d')) as {
+    drawImage: (image: unknown, ...args: number[]) => void;
+  };
+  const drawImage = ctxProto.drawImage;
+  ctxProto.drawImage = function (image: unknown, ...args: number[]) {
+    const source = backing.get(image as HTMLCanvasElement) ?? image;
+    drawImage.call(this, source, ...args);
+  };
+
   Object.assign(globalThis, {
     Path2D,
     ImageData,

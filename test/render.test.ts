@@ -25,6 +25,43 @@ describe('renderFrames', () => {
     expect(new Set(a.map(hash)).size).toBe(spec.frames);
   });
 
+  it('captures each frame after its own draw', async () => {
+    const drawn: number[] = [];
+    const frames = await renderFrames(
+      {
+        draw(p, frame) {
+          drawn.push(frame);
+          p.background(frame * 60, 0, 0);
+        },
+      },
+      spec,
+    );
+    expect(drawn).toEqual([0, 1, 2, 3]);
+    expect(frames.map((d) => [d[0], d[3]])).toEqual([
+      [0, 255],
+      [60, 255],
+      [120, 255],
+      [180, 255],
+    ]);
+  });
+
+  it('draws offscreen layers onto the main canvas', async () => {
+    let layer: ReturnType<Parameters<Sketch['draw']>[0]['createGraphics']>;
+    const [frame] = await renderFrames(
+      {
+        setup(p) {
+          layer = p.createGraphics(spec.width, spec.height);
+          layer.background(0, 255, 0);
+        },
+        draw(p) {
+          p.image(layer, 0, 0);
+        },
+      },
+      spec,
+    );
+    expect(Array.from(frame!.subarray(0, 4))).toEqual([0, 255, 0, 255]);
+  });
+
   it('encodes a GIF', async () => {
     const frames = await renderFrames(sketch, spec);
     const gif = encodeGif(frames, { width: spec.width, height: spec.height, fps: 15 });
