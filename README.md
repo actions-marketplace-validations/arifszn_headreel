@@ -35,7 +35,7 @@ npx headreel --style contribution-city --user octocat \
 
 You need [Node.js](https://nodejs.org) 22 (22.22.2 or later), 24 (24.15.0 or later), or 26 and later. You also need a GitHub token. If you use the [GitHub CLI](https://cli.github.com), log in with `gh auth login`, and headreel finds the token. For other ways, see [Command options](#command-options).
 
-To put the banner on your profile, add `headreel.gif` to your profile repository. Then add this line to its `README.md`:
+To put the banner on your profile, add `headreel.gif` to your [profile repository](#your-profile-repository). Then add this line to its `README.md`, where you want the banner to show:
 
 ```markdown
 ![My GitHub activity](headreel.gif)
@@ -45,7 +45,7 @@ To put the banner on your profile, add `headreel.gif` to your profile repository
 
 A banner that you make on your computer does not change. The Action makes a new banner every day.
 
-Your profile repository has the same name as your username, for example `octocat/octocat`. Do these steps in that repository.
+Do these steps in your [profile repository](#your-profile-repository).
 
 1. Create the file `.github/workflows/headreel.yml` with this content:
 
@@ -74,14 +74,26 @@ Your profile repository has the same name as your username, for example `octocat
 
 2. Open the **Actions** tab of the repository. Select **headreel**, then select **Run workflow**.
 3. Wait for the run to finish. The workflow adds `headreel.gif` to the repository.
-4. Add this line to your `README.md`:
+4. Add this line to your `README.md`, where you want the banner to show:
 
    ```markdown
    ![My GitHub activity](headreel.gif)
    ```
 
+5. Open your GitHub profile page to see the banner.
+
 > [!NOTE]
 > The workflow makes a commit only when the banner changes. Your contribution count changes most days, so expect about one commit each day.
+
+### Your profile repository
+
+Your profile repository has the same name as your username, for example `octocat/octocat`. GitHub shows its `README.md` at the top of your profile page.
+
+If you do not have one, make it:
+
+1. On GitHub, create a new repository. Use your username as the repository name.
+2. Make the repository **Public**.
+3. Turn on **Add README**, then select **Create repository**.
 
 ## Action inputs
 
