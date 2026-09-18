@@ -1,0 +1,323 @@
+{
+  "profile": {
+    "login": "arifszn",
+    "name": "Ariful Alam"
+  },
+  "data": {
+    "asOf": "2026-09-18",
+    "repos": [
+      {
+        "name": "gitprofile",
+        "fork": false,
+        "stars": 2308,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-09-01"
+      },
+      {
+        "name": "ezfolio",
+        "fork": false,
+        "stars": 293,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2024-04-21"
+      },
+      {
+        "name": "reactive-button",
+        "fork": false,
+        "stars": 140,
+        "language": {
+          "name": "CSS",
+          "color": "#663399"
+        },
+        "pushedAt": "2026-01-20"
+      },
+      {
+        "name": "OneClick",
+        "fork": false,
+        "stars": 97,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "reforge",
+        "fork": false,
+        "stars": 69,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "react-laravel",
+        "fork": false,
+        "stars": 61,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2021-08-25"
+      },
+      {
+        "name": "reddit-image-fetcher",
+        "fork": false,
+        "stars": 49,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "slide-wright",
+        "fork": false,
+        "stars": 47,
+        "language": null,
+        "pushedAt": "2026-09-13"
+      },
+      {
+        "name": "blog.js",
+        "fork": false,
+        "stars": 43,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2024-07-01"
+      },
+      {
+        "name": "pandora",
+        "fork": false,
+        "stars": 39,
+        "language": {
+          "name": "CSS",
+          "color": "#663399"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "find-me",
+        "fork": false,
+        "stars": 19,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2022-03-16"
+      },
+      {
+        "name": "seemore",
+        "fork": false,
+        "stars": 18,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-09-18"
+      },
+      {
+        "name": "laravel-advanced-validation",
+        "fork": false,
+        "stars": 15,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2022-03-11"
+      },
+      {
+        "name": "reminder-mcp",
+        "fork": false,
+        "stars": 15,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-01-30"
+      },
+      {
+        "name": "vail",
+        "fork": false,
+        "stars": 12,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "memeDB",
+        "fork": false,
+        "stars": 11,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2021-08-21"
+      },
+      {
+        "name": "php-blog-client",
+        "fork": false,
+        "stars": 11,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2022-06-19"
+      },
+      {
+        "name": "shepai",
+        "fork": false,
+        "stars": 11,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-01-22"
+      },
+      {
+        "name": "velvet",
+        "fork": false,
+        "stars": 11,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2025-10-30"
+      },
+      {
+        "name": "reddit-image-fetcher-php",
+        "fork": false,
+        "stars": 10,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2025-07-08"
+      },
+      {
+        "name": "arifszn",
+        "fork": false,
+        "stars": 8,
+        "language": null,
+        "pushedAt": "2026-09-18"
+      },
+      {
+        "name": "nixn",
+        "fork": false,
+        "stars": 8,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2025-10-13"
+      },
+      {
+        "name": "wordly-mcp-app",
+        "fork": false,
+        "stars": 6,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-02-01"
+      },
+      {
+        "name": "overwatch",
+        "fork": false,
+        "stars": 2,
+        "language": {
+          "name": "JavaScript",
+          "color": "#f1e05a"
+        },
+        "pushedAt": "2025-02-12"
+      },
+      {
+        "name": ".github",
+        "fork": false,
+        "stars": 1,
+        "language": null,
+        "pushedAt": "2022-09-08"
+      },
+      {
+        "name": "awesome-mcp-servers",
+        "fork": true,
+        "stars": 1,
+        "language": null,
+        "pushedAt": "2025-07-09"
+      },
+      {
+        "name": "chat-ui",
+        "fork": true,
+        "stars": 1,
+        "language": {
+          "name": "Svelte",
+          "color": "#ff3e00"
+        },
+        "pushedAt": "2023-09-29"
+      },
+      {
+        "name": "docker-commons",
+        "fork": true,
+        "stars": 1,
+        "language": {
+          "name": "Shell",
+          "color": "#89e051"
+        },
+        "pushedAt": "2026-01-22"
+      },
+      {
+        "name": "pest",
+        "fork": true,
+        "stars": 1,
+        "language": {
+          "name": "PHP",
+          "color": "#4F5D95"
+        },
+        "pushedAt": "2024-02-20"
+      },
+      {
+        "name": "ai-stuff",
+        "fork": false,
+        "stars": 0,
+        "language": null,
+        "pushedAt": "2026-09-18"
+      },
+      {
+        "name": "arifszn.github.io",
+        "fork": false,
+        "stars": 0,
+        "language": {
+          "name": "HTML",
+          "color": "#e34c26"
+        },
+        "pushedAt": "2023-06-18"
+      },
+      {
+        "name": "headreel",
+        "fork": false,
+        "stars": 0,
+        "language": {
+          "name": "TypeScript",
+          "color": "#3178c6"
+        },
+        "pushedAt": "2026-09-18"
+      },
+      {
+        "name": "seemore-skill",
+        "fork": false,
+        "stars": 0,
+        "language": null,
+        "pushedAt": "2026-09-16"
+      }
+    ]
+  }
+}

@@ -8,13 +8,13 @@ branding:
 
 inputs:
   style:
-    description: 'Banner style. Available: contribution-city.'
+    description: 'Banner style. Available: contribution-city, repo-galaxy.'
     required: true
   username:
     description: GitHub login to render. Defaults to the repository owner.
     default: ${{ github.repository_owner }}
   token:
-    description: GitHub token used to read contribution data.
+    description: GitHub token used to read your GitHub data.
     default: ${{ github.token }}
   output:
     description: Path of the GIF in your repository.

@@ -87,7 +87,7 @@ The Action and the command use the same settings.
 | `handle`         | `--handle`             | empty                           | A handle, for styles that show one.                                                                               |
 | `options`        | `--option <key=value>` | empty                           | Style options. Action: one `key: value` on each line. Command: repeat the flag, for example `--option beacons=5`. |
 | `output`         | `--out`                | `headreel.gif`                  | The path of the banner.                                                                                           |
-| `token`          | `--token`              | `github.token`                  | The token that reads your contribution data.                                                                      |
+| `token`          | `--token`              | `github.token`                  | The token that reads your GitHub data.                                                                            |
 | `publish_mode`   | -                      | `commit`                        | `commit` adds a commit on every update. `branch` keeps one commit on its own branch, replaced on every update.    |
 | `commit_to`      | -                      | checked-out branch / `headreel` | The branch that gets the banner. The default is `headreel` in `branch` mode.                                      |
 | `commit_message` | -                      | `chore: update headreel banner` | The commit message.                                                                                               |
@@ -105,7 +105,19 @@ Empty settings do not show on the banner. Your name comes from your GitHub profi
 | --------- | ------- | -------------------------------------------------- |
 | `beacons` | `8`     | The number of busiest days with a beacon, 0 to 10. |
 
-Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command.
+### Repo Galaxy
+
+`repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.
+
+![Repo Galaxy banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/repo-galaxy.gif)
+
+| Option          | Default | Description                                                           |
+| --------------- | ------- | --------------------------------------------------------------------- |
+| `max_repos`     | `20`    | The number of repositories to show, 5 to 30.                          |
+| `include_forks` | `false` | Show forked repositories too.                                         |
+| `labels`        | `top3`  | `top3` names the three most starred repositories. `none` hides names. |
+
+Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command. For more than one option in the Action, put each on its own line.
 
 ## Troubleshooting
 

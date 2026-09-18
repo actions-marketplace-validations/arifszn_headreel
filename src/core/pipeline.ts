@@ -33,7 +33,13 @@ export async function renderBanner<Data, S extends z.ZodType>(
   const options = parseOptions(style as Style<unknown, S>, input.options);
   registerFonts();
   const rng = createRng(hashSeed(`${input.login}:${style.id}`));
-  const sketch = style.createSketch({ data: input.data, options, identity: input.identity, rng });
+  const sketch = style.createSketch({
+    login: input.login,
+    data: input.data,
+    options,
+    identity: input.identity,
+    rng,
+  });
   const frames = await renderFrames(sketch, { ...CANVAS, frames: style.frames });
   return encodeGif(frames, { ...CANVAS, fps: style.fps });
 }

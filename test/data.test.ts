@@ -7,6 +7,7 @@ import {
 import { DataError } from '../src/core/data/errors.js';
 import { createGraphQLClient } from '../src/core/data/graphql.js';
 import { fetchProfile } from '../src/core/data/profile.js';
+import { fetchRepos, reposSchema } from '../src/core/data/repos.js';
 import { resolveToken } from '../src/core/data/token.js';
 
 function mockFetch(body: unknown, init: ResponseInit = {}) {
@@ -152,6 +153,50 @@ describe('fetchContributions', () => {
       ],
     });
     expect(contributionsSchema.safeParse(data).success).toBe(true);
+  });
+});
+
+describe('fetchRepos', () => {
+  it('merges own and fork lists, sorted by stars then name', async () => {
+    const node = (name: string, stars: number, isFork = false) => ({
+      name,
+      isFork,
+      stargazerCount: stars,
+      pushedAt: '2026-08-01T10:00:00Z',
+      primaryLanguage: { name: 'Go', color: '#00ADD8' },
+    });
+    const fetchFn = mockFetch({
+      data: {
+        user: {
+          own: { nodes: [node('b', 5), node('a', 5)] },
+          all: {
+            nodes: [
+              node('fork', 9, true),
+              node('b', 5),
+              { ...node('a', 5), pushedAt: null, primaryLanguage: null },
+            ],
+          },
+        },
+      },
+    });
+    const data = await fetchRepos(client(fetchFn), 'octo', new Date('2026-09-19T12:00:00Z'));
+
+    const vars = JSON.parse(fetchFn.mock.calls[0]![1]!.body as string).variables;
+    expect(vars).toEqual({ login: 'octo', first: 30 });
+    expect(data.asOf).toBe('2026-09-19');
+    expect(data.repos.map((r) => [r.name, r.fork])).toEqual([
+      ['fork', true],
+      ['a', false],
+      ['b', false],
+    ]);
+    expect(data.repos[1]).toEqual({
+      name: 'a',
+      fork: false,
+      stars: 5,
+      language: null,
+      pushedAt: '1970-01-01',
+    });
+    expect(reposSchema.safeParse(data).success).toBe(true);
   });
 });
 

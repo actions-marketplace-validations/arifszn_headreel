@@ -12,6 +12,7 @@ export interface Identity {
 }
 
 export interface StyleContext<Data, Options> {
+  login: string;
   data: Data;
   options: Options;
   identity: Identity;
@@ -19,6 +20,8 @@ export interface StyleContext<Data, Options> {
 }
 
 export interface DataSource<Data> {
+  /** Fixture file suffix: `fixtures/<login>.<name>.json`. */
+  name: string;
   /** Validates `--fixture` files and defines the normalized data shape. */
   schema: z.ZodType<Data>;
   fetch(client: GraphQLClient, login: string, now: Date): Promise<Data>;

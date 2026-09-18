@@ -12,7 +12,7 @@ export const contributionCity: Style<Contributions, typeof options> = {
   id: 'contribution-city',
   fps: 25,
   frames: 150,
-  data: { schema: contributionsSchema, fetch: fetchContributions },
+  data: { name: 'contributions', schema: contributionsSchema, fetch: fetchContributions },
   options,
   createSketch({ data, options, identity, rng }) {
     return createCitySketch(buildCity(data, rng, options.beacons), identity, rng);
