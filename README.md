@@ -106,9 +106,9 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
-| Option   | Default | Description                                                                                   |
-| -------- | ------- | --------------------------------------------------------------------------------------------- |
-| `accent` | `cyan`  | Color of the roofs, windows, lights and links: `cyan`, `cobalt`, `green`, `violet` or `pink`. |
+| Option   | Default | Description                                                                   |
+| -------- | ------- | ----------------------------------------------------------------------------- |
+| `accent` | `cyan`  | Color of the lights and links: `cyan`, `cobalt`, `green`, `violet` or `pink`. |
 
 </td>
 </tr>
@@ -142,10 +142,10 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ![Highlights Reel banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/highlights-reel.gif)
 
-| Option   | Default  | Description                                                                            |
-| -------- | -------- | -------------------------------------------------------------------------------------- |
-| `theme`  | `light`  | `light` or `dark`. Use `dark` if your profile is mostly viewed in GitHub dark mode.    |
-| `accent` | `cobalt` | Color of the bars, numbers and links: `cobalt`, `green`, `violet`, `orange` or `pink`. |
+| Option   | Default  | Description                                                                   |
+| -------- | -------- | ----------------------------------------------------------------------------- |
+| `theme`  | `light`  | `light` or `dark`. Use `dark` for GitHub dark mode.                           |
+| `accent` | `cobalt` | Color of the bars and links: `cobalt`, `green`, `violet`, `orange` or `pink`. |
 
 </td>
 </tr>
@@ -184,7 +184,7 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | Option   | Default  | Description                                                                     |
 | -------- | -------- | ------------------------------------------------------------------------------- |
 | `theme`  | `dark`   | `dark` or `light`. Use `light` if your profile is mostly viewed in light mode.  |
-| `accent` | `cobalt` | Prompt, cursor, tagline and LED: `cobalt`, `green`, `violet`, `orange`, `pink`. |
+| `accent` | `cobalt` | Color of the prompt and light: `cobalt`, `green`, `violet`, `orange` or `pink`. |
 | `items`  | `5`      | Repositories printed as line items, `0` to `5`.                                 |
 
 </td>
