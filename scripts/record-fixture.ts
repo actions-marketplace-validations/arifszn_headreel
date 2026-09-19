@@ -18,7 +18,8 @@ if (!login || !style) {
 const client = createGraphQLClient({ token: resolveToken() });
 const [profile, data] = await Promise.all([
   fetchProfile(client, login),
-  style.data.fetch(client, login, new Date()),
+  // Default options, so the fixture matches what a run without options fetches.
+  style.data.fetch(client, login, new Date(), style.options.parse({})),
 ]);
 
 const path = `fixtures/${login}.${style.data.name}.json`;

@@ -19,12 +19,13 @@ export interface StyleContext<Data, Options> {
   rng: Rng;
 }
 
-export interface DataSource<Data> {
+export interface DataSource<Data, Options = unknown> {
   /** Fixture file suffix: `fixtures/<login>.<name>.json`. */
   name: string;
   /** Validates `--fixture` files and defines the normalized data shape. */
   schema: z.ZodType<Data>;
-  fetch(client: GraphQLClient, login: string, now: Date): Promise<Data>;
+  /** Options are the validated style options, so they can shape the queries. */
+  fetch(client: GraphQLClient, login: string, now: Date, options: Options): Promise<Data>;
 }
 
 export interface Style<Data = unknown, Schema extends z.ZodType = z.ZodType> {
@@ -33,7 +34,7 @@ export interface Style<Data = unknown, Schema extends z.ZodType = z.ZodType> {
   frames: number;
   /** Flat colors the encoder keeps exact and undithered; see `EncodeSpec.pinned`. */
   pinned?: (options: z.infer<Schema>) => readonly (readonly [number, number, number])[];
-  data: DataSource<Data>;
+  data: DataSource<Data, z.infer<Schema>>;
   options: Schema;
   createSketch(ctx: StyleContext<Data, z.infer<Schema>>): Sketch;
 }

@@ -6,6 +6,9 @@ const FONT_FILES = [
   'SpaceGrotesk-Medium.ttf',
   'SpaceGrotesk-Bold.ttf',
   'JetBrainsMono-Regular.ttf',
+  // Handwriting face for Now Playing's cassette label. Variable font: Skia
+  // registers the default 400 instance and ignores other weights.
+  'Caveat.ttf',
 ] as const;
 
 // Resolves from both src/core (tsx, vitest) and dist/core (published build).

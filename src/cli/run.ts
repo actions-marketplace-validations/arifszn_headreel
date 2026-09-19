@@ -38,7 +38,7 @@ async function render(settings: Settings, io: Io): Promise<void> {
     throw new Error(`Output must be a .gif file, got "${settings.out}".`);
   }
   // Fail on bad options before any API call.
-  parseOptions(style, settings.options);
+  const options = parseOptions(style, settings.options);
 
   let login: string;
   let name: string;
@@ -52,7 +52,7 @@ async function render(settings: Settings, io: Io): Promise<void> {
     const user = settings.user!;
     const [profile, fetched] = await Promise.all([
       fetchProfile(client, user),
-      style.data.fetch(client, user, io.now()),
+      style.data.fetch(client, user, io.now(), options),
     ]);
     ({ login, name } = profile);
     data = fetched;

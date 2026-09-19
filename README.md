@@ -120,6 +120,18 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | `theme`  | `light`  | `light` or `dark`. Use `dark` if your profile is mostly viewed in GitHub dark mode.    |
 | `accent` | `cobalt` | Color of the bars, numbers and links: `cobalt`, `green`, `violet`, `orange` or `pink`. |
 
+### Now Playing
+
+`now-playing`: a cassette deck playing the repository you committed to most in the last 30 days. The label names its language, your commit messages on it scroll across the deck's display as lyrics, and the level meter shows the month day by day. When nothing was committed in the last 30 days, the deck shows the repository you pushed to last as `LAST PLAYED`.
+
+![Now Playing banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/now-playing.gif)
+
+| Option    | Default | Description                                                                                         |
+| --------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `theme`   | `dark`  | `dark` (graphite deck) or `light` (silver deck).                                                    |
+| `accent`  | `cyan`  | Display color, meter and links: `cyan`, `green` or `orange`.                                        |
+| `exclude` | empty   | Comma-separated repositories never picked, for example your profile repository: `exclude: octocat`. |
+
 ### Repo Galaxy
 
 `repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.
