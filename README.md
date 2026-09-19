@@ -120,6 +120,24 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 <tr>
 <td>
 
+### Spec Sheet
+
+`spec-sheet`: your GitHub profile as a printed spec card on grid paper. Your avatar renders as a monochrome halftone portrait that dissolves and rebuilds dot by dot, next to a stats table (followers, stars, repos, contributions) and your name as the headline.
+
+![Spec Sheet banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/spec-sheet.gif)
+
+| Option   | Default | Description                                                                         |
+| -------- | ------- | ----------------------------------------------------------------------------------- |
+| `accent` | `gray`  | Eyebrow, tagline, website and cursor: `gray`, `teal`, `cobalt`, `violet`, `sienna`. |
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+
 ### Highlights Reel
 
 `highlights-reel`: a few profile facts, each on its own card, filmed by one camera. The camera travels between the cards, pushes into your busiest week, and ends on a wide shot of the whole reel.

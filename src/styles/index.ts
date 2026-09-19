@@ -3,6 +3,7 @@ import { highlightsReel } from './highlights-reel/index.js';
 import { nowPlaying } from './now-playing/index.js';
 import { receipt } from './receipt/index.js';
 import { repoGalaxy } from './repo-galaxy/index.js';
+import { specSheet } from './spec-sheet/index.js';
 import { trailProfile } from './trail-profile/index.js';
 import type { Style } from './types.js';
 
@@ -13,5 +14,6 @@ export const styles: Record<string, Style<any, any>> = {
   [nowPlaying.id]: nowPlaying,
   [receipt.id]: receipt,
   [repoGalaxy.id]: repoGalaxy,
+  [specSheet.id]: specSheet,
   [trailProfile.id]: trailProfile,
 };

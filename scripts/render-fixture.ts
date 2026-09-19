@@ -1,16 +1,16 @@
 // Renders a style from a fixture, for development and gallery samples.
-// Usage: pnpm tsx scripts/render-fixture.ts <style> <fixture> <out.gif> [tagline] [website]
+// Usage: pnpm tsx scripts/render-fixture.ts <style> <fixture> <out.gif> [tagline] [website] [handle]
 import { writeFile } from 'node:fs/promises';
 import { performance } from 'node:perf_hooks';
 import { loadFixture } from '../src/core/data/fixture.js';
 import { renderBanner } from '../src/core/pipeline.js';
 import { styles } from '../src/styles/index.js';
 
-const [styleId, fixturePath, out, tagline, website] = process.argv.slice(2);
+const [styleId, fixturePath, out, tagline, website, handle] = process.argv.slice(2);
 const style = styleId ? styles[styleId] : undefined;
 if (!style || !fixturePath || !out) {
   console.error(
-    `Usage: pnpm tsx scripts/render-fixture.ts <${Object.keys(styles).join('|')}> <fixture> <out.gif> [tagline] [website]`,
+    `Usage: pnpm tsx scripts/render-fixture.ts <${Object.keys(styles).join('|')}> <fixture> <out.gif> [tagline] [website] [handle]`,
   );
   process.exit(1);
 }
@@ -24,6 +24,7 @@ const gif = await renderBanner(style, {
     name: profile.name,
     ...(tagline ? { tagline } : {}),
     ...(website ? { website } : {}),
+    ...(handle ? { handle } : {}),
   },
 });
 await writeFile(out, gif);
