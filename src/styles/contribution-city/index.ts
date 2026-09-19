@@ -15,6 +15,6 @@ export const contributionCity: Style<Contributions, typeof options> = {
   data: { name: 'contributions', schema: contributionsSchema, fetch: fetchContributions },
   options,
   createSketch({ data, options, identity, rng }) {
-    return createCitySketch(buildCity(data, rng, options.beacons), identity, rng);
+    return createCitySketch(buildCity(data, rng), identity, rng, options.accent);
   },
 };

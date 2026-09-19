@@ -95,7 +95,10 @@ export function tileAt(weeks: number, w: number, d: number): { x: number; y: num
   return { x: o.x + w * LAYOUT.cell + depth * LAYOUT.depthX, y: o.y - depth * LAYOUT.depthY };
 }
 
-export function buildCity(data: Contributions, rng: Rng, beacons: number): City {
+/** Busiest days marked with a beacon. */
+export const BEACONS = 8;
+
+export function buildCity(data: Contributions, rng: Rng): City {
   const between = (min: number, max: number) => min + rng() * (max - min);
   const weeks = data.weeks.length;
   const maxCount = Math.max(0, ...data.weeks.flat().map((d) => d.count));
@@ -139,7 +142,7 @@ export function buildCity(data: Contributions, rng: Rng, beacons: number): City 
   const ranked = buildings
     .filter((b) => b.count > 0)
     .sort((a, b) => b.count - a.count || a.w - b.w || a.d - b.d);
-  for (const b of ranked.slice(0, beacons)) b.beacon = true;
+  for (const b of ranked.slice(0, BEACONS)) b.beacon = true;
   // Back rows first, then left to right, so front towers occlude correctly.
   buildings.sort((a, b) => a.d - b.d || a.w - b.w);
 

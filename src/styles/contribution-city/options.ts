@@ -1,9 +1,13 @@
 import { z } from 'zod';
 
+export const ACCENTS = ['cyan', 'cobalt', 'green', 'violet', 'pink'] as const;
+
+export type Accent = (typeof ACCENTS)[number];
+
 export const options = z
   .object({
-    /** Number of busiest days marked with a beacon. */
-    beacons: z.coerce.number().int().min(0).max(10).default(8),
+    /** Color of the roofs, windows, glow, lines, scan beam and links. */
+    accent: z.enum(ACCENTS).default('cyan'),
   })
   .strict();
 

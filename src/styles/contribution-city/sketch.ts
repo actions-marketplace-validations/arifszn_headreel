@@ -3,6 +3,7 @@ import type { Rng } from '../../core/prng.js';
 import type { Sketch } from '../../core/render/render.js';
 import type { Identity } from '../types.js';
 import { cityOrigin, LAYOUT, tileAt, type Arc, type Building, type City } from './city.js';
+import type { Accent } from './options.js';
 
 const PALETTE = {
   skyTop: '#07090c',
@@ -10,12 +11,48 @@ const PALETTE = {
   skyFloor: '#0c0a09',
   front: [20, 28, 34],
   side: [12, 18, 23],
-  top: [8, 145, 178],
-  window: [165, 243, 252],
-  cyan: '#22d3ee',
   ink: '#f5f5f4',
   muted: '#a8a29e',
 } as const;
+
+type Rgb = readonly [number, number, number];
+
+/**
+ * One accent family: deep (roofs, horizon glow), bright (lines, beam, text),
+ * pale (windows, lit edges, packets), and the tint the scan beam adds to a
+ * building front. Tailwind 600/400/200; see SPEC for the contrast checks.
+ */
+interface Family {
+  deep: Rgb;
+  bright: Rgb;
+  pale: Rgb;
+  scan: Rgb;
+}
+
+const ACCENTS: Record<Accent, Family> = {
+  cyan: { deep: [8, 145, 178], bright: [34, 211, 238], pale: [165, 243, 252], scan: [12, 40, 50] },
+  cobalt: {
+    deep: [37, 99, 235],
+    bright: [96, 165, 250],
+    pale: [191, 219, 254],
+    scan: [19, 33, 50],
+  },
+  green: { deep: [5, 150, 105], bright: [52, 211, 153], pale: [167, 243, 208], scan: [10, 42, 31] },
+  violet: {
+    deep: [124, 58, 237],
+    bright: [167, 139, 250],
+    pale: [221, 214, 254],
+    scan: [33, 28, 50],
+  },
+  pink: {
+    deep: [219, 39, 119],
+    bright: [244, 114, 182],
+    pale: [251, 207, 232],
+    scan: [49, 23, 36],
+  },
+};
+
+const rgba = ([r, g, b]: Rgb, a: number): string => `rgba(${r},${g},${b},${a})`;
 
 const SANS = 'Space Grotesk';
 const MONO = 'JetBrains Mono';
@@ -38,7 +75,15 @@ function displayUrl(url: string): string {
   return url.replace(/^[a-z]+:\/\//i, '').replace(/\/+$/, '');
 }
 
-export function createCitySketch(city: City, identity: Identity, rng: Rng): Sketch {
+export function createCitySketch(
+  city: City,
+  identity: Identity,
+  rng: Rng,
+  accent: Accent = 'cyan',
+): Sketch {
+  const { deep, bright, pale, scan } = ACCENTS[accent];
+  const [br, bg, bb] = bright;
+  const [pr, pg, pb] = pale;
   const origin = cityOrigin(city.weeks);
   const noiseSeed = Math.floor(rng() * 2 ** 31);
   const grainSeed = Math.floor(rng() * 2 ** 31);
@@ -65,9 +110,9 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     const gx = origin.x + 520;
     const gy = baseY - 40;
     const glow = ctx.createRadialGradient(gx, gy, 10, gx, gy, 620);
-    glow.addColorStop(0, 'rgba(8,145,178,0.22)');
-    glow.addColorStop(0.5, 'rgba(8,145,178,0.06)');
-    glow.addColorStop(1, 'rgba(8,145,178,0)');
+    glow.addColorStop(0, rgba(deep, 0.22));
+    glow.addColorStop(0.5, rgba(deep, 0.06));
+    glow.addColorStop(1, rgba(deep, 0));
     ctx.fillStyle = glow;
     ctx.fillRect(0, 0, W, H);
 
@@ -76,7 +121,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     g.noFill();
     g.strokeWeight(0.6);
     for (let k = 0; k < 7; k++) {
-      g.stroke(34, 211, 238, 10 + k * 1.5);
+      g.stroke(br, bg, bb, 10 + k * 1.5);
       g.beginShape();
       for (let x = 0; x <= W; x += 8) {
         const n = p.noise(x * 0.0025, k * 0.4);
@@ -127,13 +172,13 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
       back.y - depthY - 4,
     );
     // Street grid, one line per weekday row.
-    p.stroke(34, 211, 238, 18);
+    p.stroke(br, bg, bb, 18);
     p.strokeWeight(0.6);
     for (let d = 0; d <= 7; d++) {
       const y = origin.y - d * depthY + 2;
       p.line(origin.x + d * depthX - 8, y, frontRight.x + d * depthX + 8, y);
     }
-    p.stroke(34, 211, 238, 60);
+    p.stroke(br, bg, bb, 60);
     p.strokeWeight(1);
     p.line(origin.x - 14, origin.y + 6, frontRight.x + 14, origin.y + 6);
   }
@@ -146,7 +191,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
 
     if (h === 0) {
       p.noStroke();
-      p.fill(34, 211, 238, 10 + hit * 40);
+      p.fill(br, bg, bb, 10 + hit * 40);
       p.quad(x, y, x + w, y, x + w + dx, y - dy, x + dx, y - dy);
       return;
     }
@@ -154,20 +199,20 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     const lum = 0.55 + b.t * 0.45;
     const [fr, fg, fb] = PALETTE.front;
     const [sr, sg, sb] = PALETTE.side;
-    const [tr, tg, tb] = PALETTE.top;
+    const [tr, tg, tb] = deep;
     p.noStroke();
     p.fill(sr + hit * 10, sg + hit * 30, sb + hit * 38);
     p.quad(x + w, y, x + w + dx, y - dy, x + w + dx, y - dy - h, x + w, y - h);
-    p.fill(fr * lum + hit * 12, fg * lum + hit * 40, fb * lum + hit * 50);
+    p.fill(fr * lum + hit * scan[0], fg * lum + hit * scan[1], fb * lum + hit * scan[2]);
     p.rect(x, y - h, w, h);
     p.fill(tr + hit * 60, tg + hit * 80, tb + hit * 60, Math.min(255, 90 + b.t * 165 + hit * 80));
     p.quad(x, y - h, x + w, y - h, x + w + dx, y - h - dy, x + dx, y - h - dy);
-    p.stroke(165, 243, 252, 40 + b.t * 120 + hit * 90);
+    p.stroke(pr, pg, pb, 40 + b.t * 120 + hit * 90);
     p.strokeWeight(0.8);
     p.line(x, y - h, x + w, y - h);
     p.noStroke();
 
-    const [wr, wg, wb] = PALETTE.window;
+    const [wr, wg, wb] = pale;
     for (const win of b.windows) {
       const on = win.cycles ? wave(phase, win.cycles, win.off) > 0.5 : win.lit;
       const a = on ? 150 + b.t * 80 : 18;
@@ -201,7 +246,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     const c1x = p0.x + (p3.x - p0.x) * 0.25;
     const c2x = p0.x + (p3.x - p0.x) * 0.75;
     p.noFill();
-    p.stroke(34, 211, 238, 34);
+    p.stroke(br, bg, bb, 34);
     p.strokeWeight(0.8);
     p.bezier(p0.x, p0.y, c1x, top, c2x, top, p3.x, p3.y);
 
@@ -214,7 +259,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
       const s = Math.max(0, eased - k * 0.012);
       const px = p.bezierPoint(p0.x, c1x, c2x, p3.x, s);
       const py = p.bezierPoint(p0.y, top, top, p3.y, s);
-      p.fill(165, 243, 252, (k === 0 ? 255 : 110 - k * 14) * fade);
+      p.fill(pr, pg, pb, (k === 0 ? 255 : 110 - k * 14) * fade);
       p.circle(px, py, k === 0 ? 4 : 3 - k * 0.3);
     }
   }
@@ -225,12 +270,12 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     const ctx = p.drawingContext as CanvasRenderingContext2D;
     ctx.globalAlpha = k;
     const g = ctx.createLinearGradient(scanX - 60, 0, scanX + 60, 0);
-    g.addColorStop(0, 'rgba(34,211,238,0)');
-    g.addColorStop(0.5, 'rgba(34,211,238,0.07)');
-    g.addColorStop(1, 'rgba(34,211,238,0)');
+    g.addColorStop(0, rgba(bright, 0));
+    g.addColorStop(0.5, rgba(bright, 0.07));
+    g.addColorStop(1, rgba(bright, 0));
     ctx.fillStyle = g;
     ctx.fillRect(scanX - 60, 150, 120, baseY - 140);
-    p.stroke(165, 243, 252, 70);
+    p.stroke(pr, pg, pb, 70);
     p.strokeWeight(1);
     p.line(scanX, baseY + 8, scanX, baseY + 16);
     ctx.globalAlpha = 1;
@@ -260,7 +305,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     p.textFont(MONO);
     p.textStyle(p.NORMAL);
     p.textSize(13);
-    p.fill(PALETTE.cyan);
+    p.fill(br, bg, bb);
     p.text(PROMPT, x, 58);
     if (wave(phase, 3, 0) > 0.5) {
       p.rect(x + p.textWidth(PROMPT) + 4, 47, 7, 13);
@@ -277,7 +322,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
     if (identity.tagline) {
       p.textStyle(p.NORMAL);
       p.textSize(17);
-      p.fill(PALETTE.cyan);
+      p.fill(br, bg, bb);
       p.text(identity.tagline, x, 146);
     }
 
@@ -306,7 +351,7 @@ export function createCitySketch(city: City, identity: Identity, rng: Rng): Sket
 
     if (identity.website) {
       p.textSize(12);
-      p.fill(PALETTE.cyan);
+      p.fill(br, bg, bb);
       p.text(`↗ ${displayUrl(identity.website)}`, x, 350);
     }
   }

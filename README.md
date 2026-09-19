@@ -78,26 +78,26 @@ You need:
 
 The Action and the command use the same settings.
 
-| Action input     | Command flag           | Default                         | Description                                                                                                       |
-| ---------------- | ---------------------- | ------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `style`          | `--style`              | (required)                      | The banner style. See [Styles](#styles).                                                                          |
-| `username`       | `--user`               | repository owner                | The GitHub user to show. The command requires it.                                                                 |
-| `tagline`        | `--tagline`            | empty                           | One line under your name.                                                                                         |
-| `website`        | `--website`            | empty                           | Your website.                                                                                                     |
-| `handle`         | `--handle`             | empty                           | A handle, for styles that show one.                                                                               |
-| `options`        | `--option <key=value>` | empty                           | Style options. Action: one `key: value` on each line. Command: repeat the flag, for example `--option beacons=5`. |
-| `output`         | `--out`                | `headreel.gif`                  | The path of the banner.                                                                                           |
-| `token`          | `--token`              | `github.token`                  | The token that reads your GitHub data.                                                                            |
-| `publish_mode`   | -                      | `commit`                        | `commit` adds a commit on every update. `branch` keeps one commit on its own branch, replaced on every update.    |
-| `commit_to`      | -                      | checked-out branch / `headreel` | The branch that gets the banner. The default is `headreel` in `branch` mode.                                      |
-| `commit_message` | -                      | `chore: update headreel banner` | The commit message.                                                                                               |
-| -                | `--config <file>`      | -                               | A JSON file with these settings. Flags replace its values.                                                        |
+| Action input     | Command flag           | Default                         | Description                                                                                                          |
+| ---------------- | ---------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `style`          | `--style`              | (required)                      | The banner style. See [Styles](#styles).                                                                             |
+| `username`       | `--user`               | repository owner                | The GitHub user to show. The command requires it.                                                                    |
+| `tagline`        | `--tagline`            | empty                           | One line under your name.                                                                                            |
+| `website`        | `--website`            | empty                           | Your website.                                                                                                        |
+| `handle`         | `--handle`             | empty                           | A handle, for styles that show one.                                                                                  |
+| `options`        | `--option <key=value>` | empty                           | Style options. Action: one `key: value` on each line. Command: repeat the flag, for example `--option accent=green`. |
+| `output`         | `--out`                | `headreel.gif`                  | The path of the banner.                                                                                              |
+| `token`          | `--token`              | `github.token`                  | The token that reads your GitHub data.                                                                               |
+| `publish_mode`   | -                      | `commit`                        | `commit` adds a commit on every update. `branch` keeps one commit on its own branch, replaced on every update.       |
+| `commit_to`      | -                      | checked-out branch / `headreel` | The branch that gets the banner. The default is `headreel` in `branch` mode.                                         |
+| `commit_message` | -                      | `chore: update headreel banner` | The commit message.                                                                                                  |
+| -                | `--config <file>`      | -                               | A JSON file with these settings. Flags replace its values.                                                           |
 
 Empty settings do not show on the banner. Your name comes from your GitHub profile. If your profile has no name, the banner shows your username.
 
 ## Styles
 
-Set the style with `style: <name>` in the Action, or `--style <name>` in the command. Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command. For more than one option in the Action, put each on its own line.
+Set the style with `style: <name>` in the Action, or `--style <name>` in the command. Set an option with `options: 'accent: green'` in the Action, or `--option accent=green` in the command. For more than one option in the Action, put each on its own line.
 
 ### Contribution City
 
@@ -105,9 +105,9 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
-| Option    | Default | Description                                        |
-| --------- | ------- | -------------------------------------------------- |
-| `beacons` | `8`     | The number of busiest days with a beacon, 0 to 10. |
+| Option   | Default | Description                                                                                   |
+| -------- | ------- | --------------------------------------------------------------------------------------------- |
+| `accent` | `cyan`  | Color of the roofs, windows, lights and links: `cyan`, `cobalt`, `green`, `violet` or `pink`. |
 
 ### Highlights Reel
 
