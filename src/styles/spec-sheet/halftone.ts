@@ -20,8 +20,8 @@ export const RIM = 0.12;
  * length and mirror each other, and the hold between them wraps across the
  * seam, so the loop reads as one even rhythm: hold, dissolve, rebuild.
  */
-export const DISSOLVE: readonly [number, number] = [10 / 140, 70 / 140];
-export const BUILD: readonly [number, number] = [70 / 140, 130 / 140];
+export const DISSOLVE: readonly [number, number] = [24 / 169, 84 / 169];
+export const BUILD: readonly [number, number] = [84 / 169, 144 / 169];
 /** Share of a sub-phase a single dot takes to shrink or grow. */
 const WINDOW = 0.2;
 /** Share of a sub-phase given to the seeded jitter, which feathers the front. */

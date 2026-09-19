@@ -10,7 +10,7 @@ import type { Palette } from './palette.js';
  * sketch only draws.
  */
 
-export const FRAMES = 140;
+export const FRAMES = 169;
 
 export const LAYOUT = {
   width: 1280,
