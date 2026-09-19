@@ -1,6 +1,6 @@
 {
   "name": "headreel",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Animated GitHub profile banners made from your GitHub activity, with a GitHub Action or CLI.",
   "keywords": [
     "github",
