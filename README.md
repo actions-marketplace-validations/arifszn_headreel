@@ -161,11 +161,11 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ![Now Playing banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/now-playing.gif)
 
-| Option    | Default | Description                                                                                         |
-| --------- | ------- | --------------------------------------------------------------------------------------------------- |
-| `theme`   | `dark`  | `dark` (graphite deck) or `light` (silver deck).                                                    |
-| `accent`  | `cyan`  | Display color, meter and links: `cyan`, `green` or `orange`.                                        |
-| `exclude` | empty   | Comma-separated repositories never picked, for example your profile repository: `exclude: octocat`. |
+| Option    | Default | Description                                                                |
+| --------- | ------- | -------------------------------------------------------------------------- |
+| `theme`   | `dark`  | `dark` (graphite deck) or `light` (silver deck).                           |
+| `accent`  | `cyan`  | Display color, meter and links: `cyan`, `green` or `orange`.               |
+| `exclude` | empty   | Comma-separated repositories to skip, for example your profile repository. |
 
 </td>
 </tr>
@@ -201,9 +201,9 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ![Trail Profile banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/trail-profile.gif)
 
-| Option   | Default  | Description                                                                                    |
-| -------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `accent` | `sienna` | Profile line, strata and links: `sienna`, `cobalt`, `green` or `violet`. The paper stays buff. |
+| Option   | Default  | Description                                                            |
+| -------- | -------- | ---------------------------------------------------------------------- |
+| `accent` | `sienna` | Color of the trail and links: `sienna`, `cobalt`, `green` or `violet`. |
 
 </td>
 </tr>
