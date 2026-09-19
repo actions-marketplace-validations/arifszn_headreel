@@ -1,6 +1,7 @@
 import type p5 from 'p5';
 import type { Rng } from '../../core/prng.js';
 import type { Sketch } from '../../core/render/render.js';
+import { fitIdentity } from '../../core/text.js';
 import type { Identity } from '../types.js';
 import { cityOrigin, LAYOUT, tileAt, type Arc, type Building, type City } from './city.js';
 import type { Accent } from './options.js';
@@ -84,6 +85,16 @@ export function createCitySketch(
   const { deep, bright, pale, scan } = ACCENTS[accent];
   const [br, bg, bb] = bright;
   const [pr, pg, pb] = pale;
+  // The name and tagline run above the city; the website sits beside it.
+  const fitted = fitIdentity(
+    {
+      name: identity.name.toUpperCase(),
+      tagline: identity.tagline,
+      website: identity.website && `↗ ${displayUrl(identity.website)}`,
+    },
+    W - TEXT_X - LAYOUT.rightMargin,
+    cityOrigin(city.weeks).x - 16 - TEXT_X,
+  );
   const origin = cityOrigin(city.weeks);
   const noiseSeed = Math.floor(rng() * 2 ** 31);
   const grainSeed = Math.floor(rng() * 2 ** 31);
@@ -313,17 +324,17 @@ export function createCitySketch(
 
     p.textFont(SANS);
     p.textStyle(p.BOLD);
-    p.textSize(50);
+    p.textSize(fitted.name.size);
     ctx.letterSpacing = '3px';
     p.fill(PALETTE.ink);
-    p.text(identity.name.toUpperCase(), x, 116);
+    p.text(fitted.name.text, x, 116);
     ctx.letterSpacing = '0px';
 
-    if (identity.tagline) {
+    if (fitted.tagline) {
       p.textStyle(p.NORMAL);
-      p.textSize(17);
+      p.textSize(fitted.tagline.size);
       p.fill(br, bg, bb);
-      p.text(identity.tagline, x, 146);
+      p.text(fitted.tagline.text, x, 146);
     }
 
     p.textFont(MONO);
@@ -349,10 +360,10 @@ export function createCitySketch(
       p.text('busiest days', x + 14, 296);
     }
 
-    if (identity.website) {
-      p.textSize(12);
+    if (fitted.website) {
+      p.textSize(fitted.website.size);
       p.fill(br, bg, bb);
-      p.text(`↗ ${displayUrl(identity.website)}`, x, 350);
+      p.text(fitted.website.text, x, 350);
     }
   }
 

@@ -1,4 +1,5 @@
 import type p5 from 'p5';
+import { fitIdentity } from '../../core/text.js';
 import type { Identity } from '../types.js';
 import {
   FRAMES,
@@ -39,6 +40,9 @@ const { width: W, height: H } = LAYOUT;
 const COLUMN_W = 46;
 
 const TAU = Math.PI * 2;
+
+/** Width of the identity column: x 48 to 440, the solid part of the band. */
+export const IDENTITY_COLUMN = 440 - 48;
 
 type Ctx = CanvasRenderingContext2D;
 type Rgb = readonly number[];
@@ -134,6 +138,15 @@ export function createReelSketch(
   draw: (p: p5, frame: number, t: number) => void;
 } {
   const PALETTE = reel.palette;
+  // The identity column ends where the solid part of the identity band does.
+  const fitted = fitIdentity(
+    {
+      name: identity.name.toUpperCase(),
+      tagline: identity.tagline,
+      website: identity.website && `↗ ${displayUrl(identity.website)}`,
+    },
+    IDENTITY_COLUMN,
+  );
 
   // --- camera ---------------------------------------------------------------
 
@@ -634,20 +647,23 @@ export function createReelSketch(
       ctx.fillRect(x + measure(ctx, PROMPT, { size: 13, mono: true }) + 4, 47, 7, 13);
     }
 
-    drawText(ctx, identity.name.toUpperCase(), x, 116, {
-      size: 50,
+    drawText(ctx, fitted.name.text, x, 116, {
+      size: fitted.name.size,
       bold: true,
       color: PALETTE.ink,
       tracking: 3,
     });
 
-    if (identity.tagline) {
-      drawText(ctx, identity.tagline, x, 146, { size: 17, color: PALETTE.accent });
+    if (fitted.tagline) {
+      drawText(ctx, fitted.tagline.text, x, 146, {
+        size: fitted.tagline.size,
+        color: PALETTE.accent,
+      });
     }
 
-    if (identity.website) {
-      drawText(ctx, `↗ ${displayUrl(identity.website)}`, x, 350, {
-        size: 12,
+    if (fitted.website) {
+      drawText(ctx, fitted.website.text, x, 350, {
+        size: fitted.website.size,
         mono: true,
         color: PALETTE.accent,
       });

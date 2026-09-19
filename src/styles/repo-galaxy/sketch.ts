@@ -1,6 +1,7 @@
 import type p5 from 'p5';
 import type { Rng } from '../../core/prng.js';
 import type { Sketch } from '../../core/render/render.js';
+import { fitIdentity } from '../../core/text.js';
 import type { Identity } from '../types.js';
 import { LAYOUT, RINGS, type Galaxy, type Planet, type Rgb } from './galaxy.js';
 
@@ -85,6 +86,16 @@ export function createGalaxySketch(
   rng: Rng,
 ): Sketch {
   const grainSeed = Math.floor(rng() * 2 ** 31);
+  // Everything in the text column stops short of the outer orbit's dial.
+  const column = CX - RINGS[RINGS.length - 1]!.rx - 24 - TEXT_X;
+  const fitted = fitIdentity(
+    {
+      name: identity.name.toUpperCase(),
+      tagline: identity.tagline,
+      website: identity.website && `↗ ${displayUrl(identity.website)}`,
+    },
+    column,
+  );
   let sky: p5.Graphics;
   let grain: p5.Graphics;
 
@@ -385,17 +396,17 @@ export function createGalaxySketch(
 
     p.textFont(SANS);
     p.textStyle(p.BOLD);
-    p.textSize(50);
+    p.textSize(fitted.name.size);
     ctx.letterSpacing = '3px';
     p.fill(PALETTE.ink);
-    p.text(identity.name.toUpperCase(), x, 116);
+    p.text(fitted.name.text, x, 116);
     ctx.letterSpacing = '0px';
 
-    if (identity.tagline) {
+    if (fitted.tagline) {
       p.textStyle(p.NORMAL);
-      p.textSize(17);
+      p.textSize(fitted.tagline.size);
       p.fill(...brass);
-      p.text(identity.tagline, x, 146);
+      p.text(fitted.tagline.text, x, 146);
     }
 
     const count = galaxy.planets.length;
@@ -428,10 +439,10 @@ export function createGalaxySketch(
       lx += 14 + p.textWidth(label) + 18;
     }
 
-    if (identity.website) {
-      p.textSize(12);
+    if (fitted.website) {
+      p.textSize(fitted.website.size);
       p.fill(...brass);
-      p.text(`↗ ${displayUrl(identity.website)}`, x, 350);
+      p.text(fitted.website.text, x, 350);
     }
   }
 
