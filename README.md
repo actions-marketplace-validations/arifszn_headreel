@@ -97,9 +97,13 @@ Empty settings do not show on the banner. Your name comes from your GitHub profi
 
 ## Styles
 
+Set the style with `style: <name>` in the Action, or `--style <name>` in the command. Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command. For more than one option in the Action, put each on its own line.
+
 ### Contribution City
 
 `contribution-city`: each day of the last 12 months is one building. A taller building means more contributions. Beacons glow on your busiest days.
+
+![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
 | Option    | Default | Description                                        |
 | --------- | ------- | -------------------------------------------------- |
@@ -116,8 +120,6 @@ Empty settings do not show on the banner. Your name comes from your GitHub profi
 | `max_repos`     | `20`    | The number of repositories to show, 5 to 30.                          |
 | `include_forks` | `false` | Show forked repositories too.                                         |
 | `labels`        | `top3`  | `top3` names the three most starred repositories. `none` hides names. |
-
-Set an option with `options: 'beacons: 5'` in the Action, or `--option beacons=5` in the command. For more than one option in the Action, put each on its own line.
 
 ## Troubleshooting
 
