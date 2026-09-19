@@ -5,7 +5,7 @@
 [![CI](https://github.com/arifszn/headreel/actions/workflows/ci.yml/badge.svg)](https://github.com/arifszn/headreel/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-An animated banner for your GitHub profile, made from your GitHub activity.
+Animated banners for your GitHub profile, made from your GitHub activity.
 
 ![Contribution City banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/contribution-city.gif)
 
@@ -18,8 +18,7 @@ Pick one way to make your banner:
 
 The Action is on the [GitHub Marketplace](https://github.com/marketplace/actions/headreel).
 
-1. Open your profile repository. This is the public repository with the same name as your username, for example `octocat/octocat`.
-2. Add `.github/workflows/headreel.yml`:
+1. Add `.github/workflows/headreel.yml` to your repository:
 
    ```yaml
    name: headreel
@@ -45,8 +44,8 @@ The Action is on the [GitHub Marketplace](https://github.com/marketplace/actions
              website: https://example.com
    ```
 
-3. Run the workflow once from the **Actions** tab. It adds `headreel.gif` to the `headreel` branch.
-4. Add the image line to your `README.md`. The workflow run page shows it, ready to copy. It looks like this:
+2. Run the workflow once from the **Actions** tab. It adds `headreel.gif` to the `headreel` branch.
+3. Add the image line to your `README.md`. The workflow run page shows it, ready to copy. It looks like this:
 
    ```markdown
    ![My GitHub activity](https://raw.githubusercontent.com/octocat/octocat/headreel/headreel.gif)
@@ -68,7 +67,7 @@ Run this command. Replace `octocat` with your GitHub username.
 npx headreel --style contribution-city --user octocat --tagline "Open source maintainer" --website https://example.com
 ```
 
-The command saves `headreel.gif` in the current folder. Add the file to your profile repository, and add `![My GitHub activity](headreel.gif)` to its `README.md`.
+The command saves `headreel.gif` in the current folder. Add the file to your repository, and add `![My GitHub activity](headreel.gif)` to its `README.md`.
 
 You need:
 
