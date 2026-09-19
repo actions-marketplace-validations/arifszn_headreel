@@ -12,7 +12,7 @@ Animated banners for your GitHub profile, made from your GitHub activity.
 Pick one way to make your banner:
 
 - [GitHub Action](#github-action): updates the banner every day. No setup on your computer.
-- [Command](#command): makes the banner once on your computer.
+- [CLI command](#cli-command): makes the banner once on your computer.
 
 ## GitHub Action
 
@@ -59,19 +59,17 @@ The setup above uses `publish_mode: branch`. The banner lives on its own `headre
 
 If you remove `publish_mode: branch`, each update adds a new commit to your main branch. Old banners stay in your history, and each one is a few MB.
 
-## Command
+## CLI command
 
 Run this command. Replace `octocat` with your GitHub username.
 
 ```bash
-npx headreel --style contribution-city --user octocat --tagline "Open source maintainer" --website https://example.com
+npx headreel --style highlights-reel --user octocat --tagline "Open source maintainer" --website https://example.com --option theme=dark --option accent=green
 ```
 
 The command saves `headreel.gif` in the current folder. Add the file to your repository, and add `![My GitHub activity](headreel.gif)` to its `README.md`.
 
-You need:
-
-- A GitHub token. headreel uses `--token`, then `GITHUB_TOKEN`, then your [GitHub CLI](https://cli.github.com) login (`gh auth login`).
+You need a GitHub token. Pass `--token`, set `GITHUB_TOKEN`, or log in with the [GitHub CLI](https://cli.github.com) (`gh auth login`).
 
 ## Settings
 
@@ -122,13 +120,13 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ### Spec Sheet
 
-`spec-sheet`: your GitHub profile as a printed spec card on grid paper. Your avatar renders as a monochrome halftone portrait that dissolves and rebuilds dot by dot, next to a stats table (followers, stars, repos, contributions) and your name as the headline.
+`spec-sheet`: your profile as a printed spec card. Your avatar turns into a dot pattern that fades out and back in, next to your followers, stars, repositories and contributions.
 
 ![Spec Sheet banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/spec-sheet.gif)
 
-| Option   | Default | Description                                                                         |
-| -------- | ------- | ----------------------------------------------------------------------------------- |
-| `accent` | `gray`  | Eyebrow, tagline, website and cursor: `gray`, `teal`, `cobalt`, `violet`, `sienna`. |
+| Option   | Default | Description                                                                       |
+| -------- | ------- | --------------------------------------------------------------------------------- |
+| `accent` | `gray`  | Label, tagline, website and cursor: `gray`, `teal`, `cobalt`, `violet`, `sienna`. |
 
 </td>
 </tr>
@@ -159,7 +157,7 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ### Now Playing
 
-`now-playing`: a cassette deck playing the repository you committed to most in the last 30 days. The label names its language, your commit messages on it scroll across the deck's display as lyrics, and the level meter shows the month day by day. When nothing was committed in the last 30 days, the deck shows the repository you pushed to last as `LAST PLAYED`.
+`now-playing`: a cassette deck plays the repository you committed to most in the last 30 days. Your commit messages scroll across the display, and the meter shows each day of the month.
 
 ![Now Playing banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/now-playing.gif)
 
@@ -179,7 +177,7 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ### Receipt
 
-`receipt`: a thermal printer feeds out your last 12 months as a till receipt: repositories as items, contribution counts as the totals, streaks and your best day printed below, and a barcode encoding your activity week by week. The paper prints line by line, tears off, and the next receipt starts.
+`receipt`: your last 12 months printed as a shop receipt. Your repositories are the items and your contributions are the totals, with your streaks and best day below.
 
 ![Receipt banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/receipt.gif)
 
@@ -199,7 +197,7 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 
 ### Trail Profile
 
-`trail-profile`: your last 12 months as a hiking trail's elevation profile on printed survey paper. Each week's contributions are the trail's elevation, drawn as a profile line with contour strata and engraved relief below it. A hiker marker walks the trail to your busiest week, the summit, and holds on its flag.
+`trail-profile`: your last 12 months as a hiking trail. Each week's contributions set the trail's height. A hiker walks to your busiest week, the summit.
 
 ![Trail Profile banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/trail-profile.gif)
 
