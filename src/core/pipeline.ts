@@ -41,5 +41,9 @@ export async function renderBanner<Data, S extends z.ZodType>(
     rng,
   });
   const frames = await renderFrames(sketch, { ...CANVAS, frames: style.frames });
-  return encodeGif(frames, { ...CANVAS, fps: style.fps });
+  return encodeGif(frames, {
+    ...CANVAS,
+    fps: style.fps,
+    ...(style.pinned ? { pinned: style.pinned(options) } : {}),
+  });
 }

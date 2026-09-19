@@ -31,6 +31,8 @@ export interface Style<Data = unknown, Schema extends z.ZodType = z.ZodType> {
   id: string;
   fps: number;
   frames: number;
+  /** Flat colors the encoder keeps exact and undithered; see `EncodeSpec.pinned`. */
+  pinned?: (options: z.infer<Schema>) => readonly (readonly [number, number, number])[];
   data: DataSource<Data>;
   options: Schema;
   createSketch(ctx: StyleContext<Data, z.infer<Schema>>): Sketch;

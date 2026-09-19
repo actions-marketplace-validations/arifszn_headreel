@@ -6,12 +6,19 @@ const gifenc: typeof gifencModule =
   typeof gifencModule.quantize === 'function'
     ? gifencModule
     : (gifencModule as unknown as { default: typeof gifencModule }).default;
-const { GIFEncoder, quantize, applyPalette } = gifenc;
+const { GIFEncoder, quantize } = gifenc;
 
 export interface EncodeSpec {
   width: number;
   height: number;
   fps: number;
+  /**
+   * Flat colors kept exact: each gets its own palette slot, and pixels of
+   * exactly that color are not dithered. Large flat areas (a light card on a
+   * light desk) otherwise dither into a fixed screen pattern that the moving
+   * shapes slide under, which reads as flicker.
+   */
+  pinned?: readonly (readonly [number, number, number])[];
 }
 
 /** Number of frames sampled to build the shared palette. */
@@ -44,12 +51,14 @@ const BAYER = (() => {
  * that does not change between frames dithers identically, which keeps the
  * frame deltas small and avoids shimmer.
  */
-function dither(rgba: Uint8ClampedArray, width: number): Uint8ClampedArray {
+function dither(rgba: Uint8ClampedArray, width: number, pinned: Set<number>): Uint8ClampedArray {
   const out = new Uint8ClampedArray(rgba.length);
   for (let i = 0, p = 0; i < rgba.length; i += 4, p++) {
     const x = p % width;
     const y = (p - x) / width;
-    const offset = BAYER[(y & 7) * 8 + (x & 7)]! * DITHER_SPREAD;
+    const exact =
+      pinned.size > 0 && pinned.has((rgba[i]! << 16) | (rgba[i + 1]! << 8) | rgba[i + 2]!);
+    const offset = exact ? 0 : BAYER[(y & 7) * 8 + (x & 7)]! * DITHER_SPREAD;
     out[i] = rgba[i]! + offset;
     out[i + 1] = rgba[i + 1]! + offset;
     out[i + 2] = rgba[i + 2]! + offset;
@@ -58,12 +67,49 @@ function dither(rgba: Uint8ClampedArray, width: number): Uint8ClampedArray {
   return out;
 }
 
-function buildPalette(frames: Uint8ClampedArray[], frameBytes: number): number[][] {
+/**
+ * Maps pixels to their nearest palette index, memoized per exact color.
+ * gifenc's `applyPalette` memoizes per rgb565 bucket instead, so the first pixel
+ * of a bucket in scan order picks the index for the whole bucket. Near-white
+ * pixels then land on white in one frame and on a pale grey in the next, and a
+ * flat card flickers. An exact memo is a pure function of the color.
+ */
+function createMapper(palette: number[][]): (rgba: Uint8ClampedArray) => Uint8Array {
+  const memo = new Int16Array(1 << 24).fill(-1);
+  const nearest = (r: number, g: number, b: number): number => {
+    let best = 0;
+    let bestDist = Infinity;
+    for (let k = 0; k < palette.length; k++) {
+      const c = palette[k]!;
+      const d = (c[0]! - r) ** 2 + (c[1]! - g) ** 2 + (c[2]! - b) ** 2;
+      if (d < bestDist) {
+        bestDist = d;
+        best = k;
+      }
+    }
+    return best;
+  };
+  return (rgba) => {
+    const out = new Uint8Array(rgba.length / 4);
+    for (let i = 0, p = 0; i < rgba.length; i += 4, p++) {
+      const key = (rgba[i]! << 16) | (rgba[i + 1]! << 8) | rgba[i + 2]!;
+      let index = memo[key]!;
+      if (index < 0) {
+        index = nearest(rgba[i]!, rgba[i + 1]!, rgba[i + 2]!);
+        memo[key] = index;
+      }
+      out[p] = index;
+    }
+    return out;
+  };
+}
+
+function buildPalette(frames: Uint8ClampedArray[], frameBytes: number, colors: number): number[][] {
   const step = Math.max(1, Math.floor(frames.length / PALETTE_SAMPLES));
   const picks = frames.filter((_, i) => i % step === 0).slice(0, PALETTE_SAMPLES);
   const sample = new Uint8ClampedArray(frameBytes * picks.length);
   picks.forEach((data, i) => sample.set(data, i * frameBytes));
-  return quantize(sample, COLORS);
+  return quantize(sample, colors);
 }
 
 /**
@@ -72,16 +118,22 @@ function buildPalette(frames: Uint8ClampedArray[], frameBytes: number): number[]
  */
 export function encodeGif(frames: Uint8ClampedArray[], spec: EncodeSpec): Uint8Array {
   const { width, height } = spec;
-  const palette = buildPalette(frames, width * height * 4);
+  const pinnedColors = spec.pinned ?? [];
+  const palette = [
+    ...buildPalette(frames, width * height * 4, COLORS - pinnedColors.length),
+    ...pinnedColors.map((c) => [...c]),
+  ];
+  const pinned = new Set(pinnedColors.map(([r, g, b]) => (r << 16) | (g << 8) | b));
   const globalPalette = [...palette];
   while (globalPalette.length < TRANSPARENT) globalPalette.push([0, 0, 0]);
   globalPalette.push([0, 0, 0]);
 
+  const toIndex = createMapper(palette);
   const gif = GIFEncoder();
   const delay = Math.round(1000 / spec.fps);
   let previous: Uint8Array | undefined;
   for (const [i, data] of frames.entries()) {
-    const index = applyPalette(dither(data, width), palette);
+    const index = toIndex(dither(data, width, pinned));
     let pixels = index;
     if (previous) {
       pixels = new Uint8Array(index);
