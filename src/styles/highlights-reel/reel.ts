@@ -1,5 +1,6 @@
 import type { Highlights } from '../../core/data/highlights.js';
 import type { Contributions } from '../../core/data/contributions.js';
+import { longestStreak as coreLongestStreak } from '../../core/streaks.js';
 import type { Rng } from '../../core/prng.js';
 import type { Options, Theme } from './options.js';
 import { paletteOf, type Palette, type Rgb } from './palette.js';
@@ -133,15 +134,7 @@ const CARD_ORDER = ['contributions', 'top_repo', 'pull_requests', 'languages'] a
 
 /** Longest run of consecutive days with at least one contribution. */
 export function longestStreak(contributions: Contributions): number {
-  let best = 0;
-  let run = 0;
-  for (const week of contributions.weeks) {
-    for (const day of week) {
-      run = day.count > 0 ? run + 1 : 0;
-      if (run > best) best = run;
-    }
-  }
-  return best;
+  return coreLongestStreak(contributions.weeks.flat().map((day) => day.count));
 }
 
 /** "2026-03-28" .. "2026-04-03" -> "Mar 28 to Apr 3". */

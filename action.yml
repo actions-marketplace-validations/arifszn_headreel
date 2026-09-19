@@ -8,7 +8,7 @@ branding:
 
 inputs:
   style:
-    description: 'Banner style. Available: contribution-city, highlights-reel, now-playing, repo-galaxy.'
+    description: 'Banner style. Available: contribution-city, highlights-reel, now-playing, receipt, repo-galaxy.'
     required: true
   username:
     description: GitHub login to render. Defaults to the repository owner.

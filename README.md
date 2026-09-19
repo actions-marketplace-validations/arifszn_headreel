@@ -160,6 +160,26 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 <tr>
 <td>
 
+### Receipt
+
+`receipt`: a thermal printer feeds out your last 12 months as a till receipt: repositories as items, contribution counts as the totals, streaks and your best day printed below, and a barcode encoding your activity week by week. The paper prints line by line, tears off, and the next receipt starts.
+
+![Receipt banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/receipt.gif)
+
+| Option   | Default  | Description                                                                     |
+| -------- | -------- | ------------------------------------------------------------------------------- |
+| `theme`  | `dark`   | `dark` or `light`. Use `light` if your profile is mostly viewed in light mode.  |
+| `accent` | `cobalt` | Prompt, cursor, tagline and LED: `cobalt`, `green`, `violet`, `orange`, `pink`. |
+| `items`  | `5`      | Repositories printed as line items, `0` to `5`.                                 |
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+
 ### Repo Galaxy
 
 `repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.

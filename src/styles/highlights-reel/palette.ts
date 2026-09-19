@@ -32,8 +32,9 @@ const AMBER: Rgb = [232, 163, 61];
 /**
  * Accent presets, [light, dark]. Each passes 4.5:1 against its theme's desk,
  * the lowest background its small type sits on (see SPEC, Highlights Reel).
+ * Receipt shares them: its counter is this desk.
  */
-const ACCENT_VALUES: Record<Accent, [Rgb, Rgb]> = {
+export const ACCENT_VALUES: Record<Accent, [Rgb, Rgb]> = {
   cobalt: [
     [53, 88, 232],
     [123, 147, 255],
