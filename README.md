@@ -179,6 +179,24 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 <tr>
 <td>
 
+### Trail Profile
+
+`trail-profile`: your last 12 months as a hiking trail's elevation profile on printed survey paper. Each week's contributions are the trail's elevation, drawn as a profile line with contour strata and engraved relief below it. A hiker marker walks the trail to your busiest week, the summit, and holds on its flag.
+
+![Trail Profile banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/trail-profile.gif)
+
+| Option   | Default  | Description                                                                                    |
+| -------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `accent` | `sienna` | Profile line, strata and links: `sienna`, `cobalt`, `green` or `violet`. The paper stays buff. |
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+
 ### Repo Galaxy
 
 `repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.
@@ -190,24 +208,6 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | `max_repos`     | `20`    | The number of repositories to show, 5 to 30.                          |
 | `include_forks` | `false` | Show forked repositories too.                                         |
 | `labels`        | `top3`  | `top3` names the three most starred repositories. `none` hides names. |
-
-</td>
-</tr>
-</table>
-
-<table>
-<tr>
-<td>
-
-### Trail Profile
-
-`trail-profile`: your last 12 months as a hiking trail's elevation profile on printed survey paper. Each week's contributions are the trail's elevation, drawn as a profile line with contour strata and engraved relief below it. A hiker marker walks the trail to your busiest week, the summit, and holds on its flag.
-
-![Trail Profile banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/trail-profile.gif)
-
-| Option   | Default  | Description                                                                                    |
-| -------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `accent` | `sienna` | Profile line, strata and links: `sienna`, `cobalt`, `green` or `violet`. The paper stays buff. |
 
 </td>
 </tr>
