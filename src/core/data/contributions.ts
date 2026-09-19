@@ -53,6 +53,31 @@ export const contributionsSchema = z.object({
 export type ContributionDay = z.infer<typeof daySchema>;
 export type Contributions = z.infer<typeof contributionsSchema>;
 
+interface CalendarResponse {
+  totalContributions: number;
+  weeks: {
+    contributionDays: { date: string; weekday: number; contributionCount: number }[];
+  }[];
+}
+
+/** Normalizes the GraphQL contribution calendar into the stored shape. */
+export function normalizeCalendar(
+  calendar: CalendarResponse,
+  from: string,
+  to: string,
+): Contributions {
+  return {
+    from,
+    to,
+    total: calendar.totalContributions,
+    weeks: calendar.weeks.map((week) =>
+      week.contributionDays
+        .map((d) => ({ date: d.date, weekday: d.weekday, count: d.contributionCount }))
+        .sort((a, b) => a.date.localeCompare(b.date)),
+    ),
+  };
+}
+
 const DAY_MS = 86_400_000;
 
 /**
@@ -78,15 +103,5 @@ export async function fetchContributions(
     from: `${from}T00:00:00Z`,
     to: `${to}T23:59:59Z`,
   });
-  const calendar = user.contributionsCollection.contributionCalendar;
-  return {
-    from,
-    to,
-    total: calendar.totalContributions,
-    weeks: calendar.weeks.map((week) =>
-      week.contributionDays
-        .map((d) => ({ date: d.date, weekday: d.weekday, count: d.contributionCount }))
-        .sort((a, b) => a.date.localeCompare(b.date)),
-    ),
-  };
+  return normalizeCalendar(user.contributionsCollection.contributionCalendar, from, to);
 }

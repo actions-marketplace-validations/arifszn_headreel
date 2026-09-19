@@ -6,6 +6,7 @@ import {
 } from '../src/core/data/contributions.js';
 import { DataError } from '../src/core/data/errors.js';
 import { createGraphQLClient } from '../src/core/data/graphql.js';
+import { fetchHighlights, highlightsSchema } from '../src/core/data/highlights.js';
 import { fetchProfile } from '../src/core/data/profile.js';
 import { fetchRepos, reposSchema } from '../src/core/data/repos.js';
 import { resolveToken } from '../src/core/data/token.js';
@@ -197,6 +198,84 @@ describe('fetchRepos', () => {
       pushedAt: '1970-01-01',
     });
     expect(reposSchema.safeParse(data).success).toBe(true);
+  });
+});
+
+describe('fetchHighlights', () => {
+  it('takes the top repo and ranks languages by repo count, then name', async () => {
+    const node = (name: string, language: { name: string; color: string } | null) => ({
+      name,
+      stargazerCount: 5,
+      forkCount: 1,
+      primaryLanguage: language,
+    });
+    const fetchFn = mockFetch({
+      data: {
+        user: {
+          contributionsCollection: {
+            contributionCalendar: {
+              totalContributions: 9,
+              weeks: [
+                { contributionDays: [{ date: '2025-09-20', weekday: 6, contributionCount: 9 }] },
+              ],
+            },
+          },
+          repos: {
+            nodes: [
+              node('a', { name: 'TypeScript', color: '#3178c6' }),
+              node('b', { name: 'Go', color: '#00ADD8' }),
+              node('c', { name: 'TypeScript', color: '#3178c6' }),
+              node('d', { name: 'Rust', color: '#dea584' }),
+              node('e', { name: 'Go', color: '#00ADD8' }),
+              node('f', { name: 'Zig', color: '#ec915c' }),
+              node('g', null),
+            ],
+          },
+          pullRequests: { totalCount: 685 },
+        },
+      },
+    });
+    const data = await fetchHighlights(client(fetchFn), 'octo', new Date('2026-09-19T12:00:00Z'));
+
+    const vars = JSON.parse(fetchFn.mock.calls[0]![1]!.body as string).variables;
+    expect(vars.login).toBe('octo');
+    expect(vars.first).toBe(30);
+    expect(data.topRepo).toEqual({
+      name: 'a',
+      stars: 5,
+      forks: 1,
+      language: { name: 'TypeScript', color: '#3178c6' },
+    });
+    expect(data.mergedPullRequests).toBe(685);
+    expect(data.contributions.total).toBe(9);
+    // Stars sum over every fetched repo; the pseudo cards keep the first six.
+    expect(data.totalStars).toBe(35);
+    expect(data.starredRepos.map((r) => r.name)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+    expect(data.starredRepos[0]).toEqual({ name: 'a', stars: 5, color: '#3178c6' });
+    // The fourth language is dropped; repos without a language are skipped.
+    expect(data.languages).toEqual([
+      { name: 'Go', color: '#00ADD8', count: 2 },
+      { name: 'TypeScript', color: '#3178c6', count: 2 },
+      { name: 'Rust', color: '#dea584', count: 1 },
+    ]);
+    expect(highlightsSchema.safeParse(data).success).toBe(true);
+  });
+
+  it('has no top repo when the account has none', async () => {
+    const fetchFn = mockFetch({
+      data: {
+        user: {
+          contributionsCollection: {
+            contributionCalendar: { totalContributions: 0, weeks: [] },
+          },
+          repos: { nodes: [] },
+          pullRequests: { totalCount: 0 },
+        },
+      },
+    });
+    const data = await fetchHighlights(client(fetchFn), 'octo', new Date('2026-09-19T12:00:00Z'));
+    expect(data.topRepo).toBeNull();
+    expect(data.languages).toEqual([]);
   });
 });
 

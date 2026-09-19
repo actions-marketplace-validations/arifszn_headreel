@@ -109,6 +109,17 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | --------- | ------- | -------------------------------------------------- |
 | `beacons` | `8`     | The number of busiest days with a beacon, 0 to 10. |
 
+### Highlights Reel
+
+`highlights-reel`: a few profile facts, each on its own card, filmed by one camera. The camera travels between the cards, pushes into your busiest week, and ends on a wide shot of the whole reel.
+
+![Highlights Reel banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/highlights-reel.gif)
+
+| Option   | Default  | Description                                                                            |
+| -------- | -------- | -------------------------------------------------------------------------------------- |
+| `theme`  | `light`  | `light` or `dark`. Use `dark` if your profile is mostly viewed in GitHub dark mode.    |
+| `accent` | `cobalt` | Color of the bars, numbers and links: `cobalt`, `green`, `violet`, `orange` or `pink`. |
+
 ### Repo Galaxy
 
 `repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.
@@ -128,3 +139,11 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | "Permission denied" or 403 error | Add `permissions: contents: write` to the workflow file. |
 | "Could not resolve to a User"    | Set `username` to a valid GitHub username.               |
 | "No GitHub token found"          | Run `gh auth login`, or set `GITHUB_TOKEN`.              |
+
+## Support
+
+If headreel is useful to you, please [star the repository](https://github.com/arifszn/headreel). It helps other people find it.
+
+## License
+
+[MIT License](./LICENSE).
