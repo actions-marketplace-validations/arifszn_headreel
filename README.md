@@ -99,6 +99,10 @@ Empty settings do not show on the banner. Your name comes from your GitHub profi
 
 Set the style with `style: <name>` in the Action, or `--style <name>` in the command. Set an option with `options: 'accent: green'` in the Action, or `--option accent=green` in the command. For more than one option in the Action, put each on its own line.
 
+<table>
+<tr>
+<td>
+
 ### Contribution City
 
 `contribution-city`: each day of the last 12 months is one building. A taller building means more contributions. Beacons glow on your busiest days.
@@ -108,6 +112,14 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | Option   | Default | Description                                                                                   |
 | -------- | ------- | --------------------------------------------------------------------------------------------- |
 | `accent` | `cyan`  | Color of the roofs, windows, lights and links: `cyan`, `cobalt`, `green`, `violet` or `pink`. |
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
 
 ### Highlights Reel
 
@@ -119,6 +131,14 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | -------- | -------- | -------------------------------------------------------------------------------------- |
 | `theme`  | `light`  | `light` or `dark`. Use `dark` if your profile is mostly viewed in GitHub dark mode.    |
 | `accent` | `cobalt` | Color of the bars, numbers and links: `cobalt`, `green`, `violet`, `orange` or `pink`. |
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
 
 ### Now Playing
 
@@ -132,6 +152,14 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | `accent`  | `cyan`  | Display color, meter and links: `cyan`, `green` or `orange`.                                        |
 | `exclude` | empty   | Comma-separated repositories never picked, for example your profile repository: `exclude: octocat`. |
 
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td>
+
 ### Repo Galaxy
 
 `repo-galaxy`: your most starred repositories orbit a sun. A bigger planet has more stars, and its color is the repository's main language. Repositories you pushed to recently orbit closer to the sun.
@@ -143,6 +171,10 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 | `max_repos`     | `20`    | The number of repositories to show, 5 to 30.                          |
 | `include_forks` | `false` | Show forked repositories too.                                         |
 | `labels`        | `top3`  | `top3` names the three most starred repositories. `none` hides names. |
+
+</td>
+</tr>
+</table>
 
 ## Troubleshooting
 
