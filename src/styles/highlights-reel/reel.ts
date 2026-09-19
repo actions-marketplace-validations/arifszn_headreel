@@ -2,6 +2,7 @@ import type { Highlights } from '../../core/data/highlights.js';
 import type { Contributions } from '../../core/data/contributions.js';
 import { longestStreak as coreLongestStreak } from '../../core/streaks.js';
 import type { Rng } from '../../core/prng.js';
+import type { Key, Shot } from '../../core/camera.js';
 import type { Options, Theme } from './options.js';
 import { paletteOf, type Palette, type Rgb } from './palette.js';
 
@@ -96,15 +97,8 @@ export interface LanguagesCard {
 
 export type Card = ContributionsCard | TopRepoCard | PullRequestsCard | LanguagesCard;
 
-export interface Shot {
-  x: number;
-  y: number;
-  z: number;
-}
-
-export interface Key extends Shot {
-  frame: number;
-}
+/** The camera between cards lives in `core/camera.ts`. */
+export type { Key, Shot };
 
 export interface Reel {
   cards: Card[];

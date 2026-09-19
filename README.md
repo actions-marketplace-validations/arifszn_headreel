@@ -195,6 +195,24 @@ Set the style with `style: <name>` in the Action, or `--style <name>` in the com
 </tr>
 </table>
 
+<table>
+<tr>
+<td>
+
+### Trail Profile
+
+`trail-profile`: your last 12 months as a hiking trail's elevation profile on printed survey paper. Each week's contributions are the trail's elevation, drawn as a profile line with contour strata and engraved relief below it. A hiker marker walks the trail to your busiest week, the summit, and holds on its flag.
+
+![Trail Profile banner](https://raw.githubusercontent.com/arifszn/headreel/main/docs/samples/trail-profile.gif)
+
+| Option   | Default  | Description                                                                                    |
+| -------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `accent` | `sienna` | Profile line, strata and links: `sienna`, `cobalt`, `green` or `violet`. The paper stays buff. |
+
+</td>
+</tr>
+</table>
+
 ## Troubleshooting
 
 | Problem                          | Fix                                                      |
